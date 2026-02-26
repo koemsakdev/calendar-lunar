@@ -1,4 +1,4 @@
-// tab1.page.scss
+// sp-calendar.page.scss
 
 .page-layout {
   display: flex;
@@ -29,7 +29,14 @@
   }
 }
 
-// Modal
+// ─── Modal ────────────────────────────────────────────────────
+.modal-content {
+  --padding-top: 16px;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  font-family: 'Nokora', sans-serif;
+}
+
 .modal-date-header {
   margin-bottom: 16px;
 }
@@ -39,14 +46,16 @@
   font-weight: bold;
   margin: 0 0 6px;
   line-height: 1.4;
-  font-family: 'Nokora', sans-serif;
 }
 
 .modal-lunar-date {
   color: #6b7280;
   font-size: 15px;
   margin: 0;
-  font-family: 'Nokora', sans-serif;
+}
+
+.modal-events-list {
+  margin-top: 12px;
 }
 
 .holiday-item {

@@ -1,0 +1,101 @@
+<!-- calendar.component.html -->
+
+<div class="calendar-wrapper">
+
+  <!-- Month & Year Selectors -->
+  <div class="selector-bar">
+    <div class="selector-group">
+      <span class="selector-label">Month:</span>
+      <ion-button fill="clear" size="small" (click)="onPrev()">
+        <ion-icon name="chevron-back-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+      <select class="kh-select" [ngModel]="currentMonthValue" (ngModelChange)="onMonthChange($event)">
+        <option *ngFor="let m of monthOptions" [value]="m.value">{{ m.label }}</option>
+      </select>
+      <ion-button fill="clear" size="small" (click)="onNext()">
+        <ion-icon name="chevron-forward-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </div>
+
+    <div class="selector-group">
+      <span class="selector-label">Year:</span>
+      <ion-button fill="clear" size="small" (click)="onPrevYear()">
+        <ion-icon name="chevron-back-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+      <select class="kh-select" [ngModel]="currentYearValue" (ngModelChange)="onYearChange($event)">
+        <option *ngFor="let y of yearOptions" [value]="y.value">{{ y.label }}</option>
+      </select>
+      <ion-button fill="clear" size="small" (click)="onNextYear()">
+        <ion-icon name="chevron-forward-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </div>
+  </div>
+
+  <!-- Calendar Card -->
+  <div class="calendar-card">
+
+    <!-- Header -->
+    <div class="calendar-header">
+      <div class="kh-date-left">
+        <div *ngFor="let line of initKhDate">{{ line }}</div>
+      </div>
+      <div class="month-title-center">
+        <h2 class="kh-month-name">{{ currentKhmerMonths.join(' ') }}</h2>
+        <h3 class="en-month-name">{{ initDateFormatted }}</h3>
+      </div>
+      <div class="nav-controls">
+        <ion-button fill="clear" size="small" (click)="onPrev()">
+          <ion-icon name="chevron-back-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+        <button class="reset-dot" (click)="reset()"></button>
+        <ion-button fill="clear" size="small" (click)="onNext()">
+          <ion-icon name="chevron-forward-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+      </div>
+    </div>
+
+    <!-- Week Header -->
+    <div class="week-header">
+      <div *ngFor="let week of daysOfWeek; let i = index"
+           class="week-cell"
+           [class.sunday]="i === 0">
+        {{ week.km.format('dddd') }}
+      </div>
+    </div>
+
+    <!-- Days Grid -->
+    <div class="days-grid">
+      <div *ngFor="let day of days"
+           class="day-cell"
+           [class.faded]="day.prevMonth || day.nextMonth"
+           [class.today]="isToday(day.date)"
+           [class.saturday]="isSaturday(day.date)"
+           [class.holiday-cambodia]="getHolidayClass(day) === 'holiday-cambodia'"
+           [class.general-event]="getHolidayClass(day) === 'general-event'"
+           (click)="onDayClick(day.date)">
+
+        <div class="day-inner">
+          <!-- Gregorian number -->
+          <div class="day-number">{{ day.day }}</div>
+
+          <!-- Khmer lunar info -->
+          <div class="day-kh-info">
+            <div class="kh-day-label">{{ getKhDN(day) }}</div>
+
+            <!-- Buddhist Holy Day icon -->
+            <div *ngIf="isBuddhistHolyDay(day)" class="buddhist-icon-wrapper">
+              <img src="assets/buddhist-icon.webp" alt="Buddhist Holy Day" class="buddhist-icon" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Khmer month label on first day of each Khmer month -->
+        <div *ngIf="showKhmerMonth(day)" class="kh-month-label">
+          {{ getKhMonth(day) }}
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>

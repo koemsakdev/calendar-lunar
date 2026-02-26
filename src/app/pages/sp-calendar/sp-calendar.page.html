@@ -1,4 +1,5 @@
-<!-- tab1.page.html -->
+<!-- sp-calendar.page.html -->
+<!-- Converted from SPCalendar.vue -->
 
 <ion-header>
   <ion-toolbar>
@@ -9,12 +10,14 @@
 <ion-content>
   <div class="page-layout">
 
-    <!-- Calendar -->
+    <!-- Calendar (left / top) -->
     <div class="calendar-section">
-      <app-calendar (dayClicked)="onDayClick($event)"></app-calendar>
+      <app-calendar
+        (dayClicked)="onDayClick($event)"
+      ></app-calendar>
     </div>
 
-    <!-- Holidays sidebar -->
+    <!-- Holidays List (right / bottom) -->
     <div class="sidebar-section">
       <app-holidays-list></app-holidays-list>
     </div>
@@ -41,9 +44,10 @@
         </ion-toolbar>
       </ion-header>
 
-      <ion-content class="ion-padding">
+      <ion-content class="modal-content">
         <ng-container *ngIf="modalDetail">
 
+          <!-- Date Title -->
           <div class="modal-date-header">
             <h4 class="modal-date-title">
               {{ formatKhDate(modalDetail.date) }},
@@ -54,7 +58,8 @@
             </p>
           </div>
 
-          <ion-list *ngIf="modalDetail.attributes?.length" lines="none">
+          <!-- Events List -->
+          <ion-list *ngIf="modalDetail.attributes?.length" lines="none" class="modal-events-list">
             <ion-item
               *ngFor="let attr of modalDetail.attributes"
               [class.holiday-item]="isHoliday(attr)"
@@ -71,6 +76,7 @@
             </ion-item>
           </ion-list>
 
+          <!-- No events -->
           <div *ngIf="!modalDetail.attributes?.length" class="no-events">
             <ion-icon name="calendar-outline" color="medium"></ion-icon>
             <p>No events on this day</p>

@@ -1,0 +1,26 @@
+<!-- holidays-list.component.html -->
+<!-- Converted from TheHolidaysList.vue -->
+
+<div class="holidays-container">
+  <h2 class="holidays-title">
+    {{ 'ព្រឹត្តិការណ៍ប្រចាំខែ' + monthLabel }}
+  </h2>
+
+  <ol class="timeline-list">
+    <li
+      *ngFor="let holiday of filteredAttributes"
+      class="timeline-item"
+      [class.holiday]="isHoliday(holiday)"
+      [class.general]="!isHoliday(holiday)"
+    >
+      <div class="timeline-dot"></div>
+      <time class="timeline-date">{{ formatDate(holiday.dates) }}</time>
+      <h3 class="timeline-title-kh">{{ getTitleKh(holiday) }}</h3>
+      <p class="timeline-title-en">{{ getTitleEn(holiday) }}</p>
+    </li>
+  </ol>
+
+  <div *ngIf="filteredAttributes.length === 0" class="empty-state">
+    <p>No events this month</p>
+  </div>
+</div>

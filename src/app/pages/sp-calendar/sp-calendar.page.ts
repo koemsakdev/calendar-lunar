@@ -1,25 +1,11 @@
 import { Component, inject, signal } from '@angular/core';
-import {
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonContent,
-  IonModal,
-  IonButtons,
-  IonButton,
-  IonIcon,
-  IonList,
-  IonItem,
-  IonLabel,
-} from '@ionic/angular/standalone';
 import * as moment from 'moment';
+import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
-import { CalendarComponent } from '../components/calendar/calendar.component';
-import { HolidaysListComponent } from '../components/holidays-list/holidays-list.component';
-import { CalendarStoreService, CalendarAttribute } from '../services/calendar-store.service';
-import { KhmerDateService } from '../services/khmer-date.service';
-import { addIcons } from 'ionicons';
-import { closeOutline, flagOutline, calendarOutline } from 'ionicons/icons';
+import { CalendarComponent } from '../../components/calendar/calendar.component';
+import { HolidaysListComponent } from '../../components/holidays-list/holidays-list.component';
+import { CalendarStoreService, CalendarAttribute } from '../../services/calendar-store.service';
+import { KhmerDateService } from '../../services/khmer-date.service';
 
 export interface DayDetail {
   date: moment.Moment;
@@ -27,36 +13,18 @@ export interface DayDetail {
 }
 
 @Component({
-  selector: 'app-tab1',
-  templateUrl: 'tab1.page.html',
-  styleUrls: ['tab1.page.scss'],
-  imports: [
-    CommonModule,
-    CalendarComponent,
-    HolidaysListComponent,
-    IonHeader,
-    IonToolbar,
-    IonTitle,
-    IonContent,
-    IonModal,
-    IonButtons,
-    IonButton,
-    IonIcon,
-    IonList,
-    IonItem,
-    IonLabel,
-  ],
+  selector: 'app-sp-calendar',
+  standalone: true,
+  imports: [IonicModule, CommonModule, CalendarComponent, HolidaysListComponent],
+  templateUrl: './sp-calendar.page.html',
+  styleUrls: ['./sp-calendar.page.scss'],
 })
-export class Tab1Page {
+export class SpCalendarPage {
   calendarStore = inject(CalendarStoreService);
   khmerDateService = inject(KhmerDateService);
 
   openModal = signal(false);
   detail = signal<DayDetail | null>(null);
-
-  constructor() {
-    addIcons({ closeOutline, flagOutline, calendarOutline });
-  }
 
   onDayClick(date: moment.Moment): void {
     this.detail.set({
@@ -73,7 +41,7 @@ export class Tab1Page {
   }
 
   getDateKhmerLunar(date: moment.Moment): string {
-    return this.khmerDateService.toLunarDate(date);
+    return this.khmerDateService.khmerDate(date).toLunarDate();
   }
 
   getAttributeKhTitle(attr: CalendarAttribute): string {

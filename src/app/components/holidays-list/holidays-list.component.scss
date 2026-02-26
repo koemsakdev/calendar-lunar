@@ -1,0 +1,89 @@
+// holidays-list.component.scss
+
+.holidays-container {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 12px;
+  margin-top: 16px;
+  font-family: 'Hanuman', 'Nokora', sans-serif;
+}
+
+.holidays-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #2563eb;
+  margin: 0 0 12px;
+  font-family: 'Hanuman', sans-serif;
+}
+
+.timeline-list {
+  position: relative;
+  list-style: none;
+  padding: 0 0 0 16px;
+  margin: 0;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: #e5e7eb;
+  }
+}
+
+.timeline-item {
+  position: relative;
+  margin-top: 16px;
+  cursor: pointer;
+  font-family: 'Nokora', sans-serif;
+
+  &.holiday {
+    color: #ef4444;
+  }
+
+  &.general {
+    color: #3b82f6;
+  }
+}
+
+.timeline-dot {
+  position: absolute;
+  left: -20px;
+  top: 4px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #e5e7eb;
+  border: 1px solid #fff;
+}
+
+.timeline-date {
+  display: block;
+  font-size: 12px;
+  opacity: 0.7;
+  line-height: 1.4;
+  margin-bottom: 2px;
+}
+
+.timeline-title-kh {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 2px 0;
+  font-family: 'Moul', 'Nokora', sans-serif;
+}
+
+.timeline-title-en {
+  font-size: 13px;
+  opacity: 0.7;
+  margin: 0;
+}
+
+.empty-state {
+  text-align: center;
+  color: #9ca3af;
+  font-size: 14px;
+  padding: 20px 0;
+}

@@ -1,0 +1,285 @@
+// calendar.component.scss
+
+.calendar-wrapper {
+  padding: 12px;
+  font-family: 'Nokora', 'Hanuman', sans-serif;
+}
+
+// ─── Selector Bar ───────────────────────────────────────────
+.selector-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 8px 12px;
+  margin-bottom: 12px;
+  background: #fff;
+}
+
+.selector-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 8px;
+
+  &:not(:last-child) {
+    border-right: 2px solid #e5e7eb;
+  }
+}
+
+.selector-label {
+  font-size: 14px;
+  color: #374151;
+}
+
+.kh-select {
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 14px;
+  color: #111827;
+  background: #fff;
+  outline: none;
+  cursor: pointer;
+
+  &:focus {
+    border-color: var(--ion-color-primary);
+  }
+}
+
+// ─── Calendar Card ───────────────────────────────────────────
+.calendar-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 8px;
+  overflow: hidden;
+}
+
+// ─── Header ──────────────────────────────────────────────────
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  padding: 4px;
+}
+
+.kh-date-left {
+  text-align: right;
+  font-size: 13px;
+  font-weight: bold;
+  line-height: 1.4;
+  flex-shrink: 0;
+}
+
+.kh-date-line {
+  white-space: nowrap;
+}
+
+.month-title-center {
+  text-align: center;
+  flex: 1;
+  padding: 0 8px;
+}
+
+.kh-month-name {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.en-month-name {
+  font-size: 14px;
+  color: #6b7280;
+  font-weight: bold;
+  margin: 2px 0 0;
+}
+
+.nav-controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.reset-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #d1d5db;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+
+  &:hover {
+    background: #9ca3af;
+  }
+}
+
+// ─── Week Header ──────────────────────────────────────────────
+.week-header {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 8px;
+  font-weight: bold;
+  font-size: 12px;
+
+  @media (min-width: 768px) {
+    font-size: 14px;
+  }
+}
+
+.week-cell {
+  text-align: center;
+  padding: 8px 4px;
+  background: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  &.sunday {
+    color: #dc2626;
+  }
+}
+
+// ─── Days Grid ───────────────────────────────────────────────
+.days-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.day-cell {
+  position: relative;
+  aspect-ratio: 10 / 8;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 4px;
+  cursor: pointer;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: transform 0.15s ease-in-out;
+  overflow: hidden;
+  white-space: nowrap;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  &.faded {
+    opacity: 0.4;
+  }
+
+  &.today {
+    background: #2563eb !important;
+    color: #fff !important;
+
+    .kh-month-label {
+      color: #bfdbfe;
+    }
+  }
+
+  &.saturday {
+    color: #dc2626;
+  }
+
+  &.holiday-cambodia {
+    color: #dc2626;
+    background: #fee2e2;
+  }
+
+  &.general-event {
+    color: #2563eb;
+    background: #dbeafe;
+  }
+}
+
+.day-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+}
+
+.day-number {
+  font-size: 16px;
+  font-weight: bold;
+  flex-shrink: 0;
+  line-height: 1;
+
+  @media (min-width: 768px) {
+    font-size: 22px;
+  }
+}
+
+.day-kh-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  font-size: 11px;
+  text-align: center;
+
+  @media (min-width: 768px) {
+    align-items: flex-end;
+    font-size: 13px;
+  }
+}
+
+.kh-day-label {
+  line-height: 1.2;
+}
+
+.kh-month-label {
+  font-weight: bold;
+  color: #2563eb;
+  font-size: 11px;
+  display: none;
+
+  @media (min-width: 768px) {
+    display: block;
+  }
+}
+
+// ─── Buddhist Icon ───────────────────────────────────────────
+.buddhist-icon-wrapper {
+  position: absolute;
+  inset: 0;
+  border-radius: 6px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  z-index: 10;
+  opacity: 0.3;
+  pointer-events: none;
+
+  @media (min-width: 1024px) {
+    position: static;
+    opacity: 1;
+    padding: 2px;
+  }
+}
+
+.buddhist-icon {
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+
+  @media (min-width: 1024px) {
+    width: 20px;
+    height: auto;
+    object-fit: contain;
+  }
+}
