@@ -8,6 +8,7 @@ import {
   inject,
 } from '@angular/core';
 import moment from 'moment';
+import 'moment/locale/km';
 import { CalendarStoreService, CalendarDay } from '../../services/calendar-store.service';
 import { KhmerDateService } from '../../services/khmer-date.service';
 import { IonButton, IonIcon } from '@ionic/angular/standalone';
@@ -35,9 +36,9 @@ export class CalendarComponent implements OnInit {
     label: moment({ M: i }).format('MMMM'),
   }));
 
-  readonly yearOptions = Array.from({ length: 1000 }, (_, i) => ({
-    value: 1900 + i,
-    label: (1900 + i).toString(),
+  readonly yearOptions = Array.from({ length: 51 }, (_, i) => ({
+    value: 2000 + i,
+    label: (2000 + i).toString(),
   }));
 
   constructor() {
@@ -117,13 +118,21 @@ export class CalendarComponent implements OnInit {
 
   isToday(date: moment.Moment): boolean { return moment().isSame(date, 'day'); }
   isSaturday(date: moment.Moment): boolean { return date.weekday() === 6; }
+  isSunday(date: moment.Moment): boolean { return date.weekday() === 0; }
 
   // ─── Getters for template ──────────────────────────────────────────────────
   get days() { return this.calendarStore.days(); }
   get daysOfWeek() { return this.calendarStore.daysOfWeek(); }
   get initKhDate() { return this.calendarStore.initKhDate(); }
   get currentKhmerMonths() { return this.calendarStore.currentKhmerMonths(); }
-  get initDateFormatted() { return this.calendarStore.initDate().format('MMMM, YYYY'); }
+  get initDateFormatted() {
+    const date = this.calendarStore.initDate();
+
+    const khMonth = date.clone().locale('km').format('MMMM');
+    const enMonthYear = date.clone().locale('en').format('MMMM YYYY');
+
+    return `${khMonth} ${enMonthYear}`;
+  }
   get currentMonthValue() { return this.calendarStore.currentMonth(); }
   get currentYearValue() { return this.calendarStore.currentYear(); }
 }

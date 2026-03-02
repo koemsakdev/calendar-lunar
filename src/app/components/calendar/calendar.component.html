@@ -1,7 +1,6 @@
 <!-- calendar.component.html -->
 
 <div class="calendar-wrapper">
-
   <!-- Month & Year Selectors -->
   <div class="selector-bar">
     <div class="selector-group">
@@ -9,8 +8,14 @@
       <ion-button fill="clear" size="small" (click)="onPrev()">
         <ion-icon name="chevron-back-outline" slot="icon-only"></ion-icon>
       </ion-button>
-      <select class="kh-select" [ngModel]="currentMonthValue" (ngModelChange)="onMonthChange($event)">
-        <option *ngFor="let m of monthOptions" [value]="m.value">{{ m.label }}</option>
+      <select
+        class="kh-select"
+        [ngModel]="currentMonthValue"
+        (ngModelChange)="onMonthChange($event)"
+      >
+        <option *ngFor="let m of monthOptions" [value]="m.value">
+          {{ m.label }}
+        </option>
       </select>
       <ion-button fill="clear" size="small" (click)="onNext()">
         <ion-icon name="chevron-forward-outline" slot="icon-only"></ion-icon>
@@ -22,8 +27,14 @@
       <ion-button fill="clear" size="small" (click)="onPrevYear()">
         <ion-icon name="chevron-back-outline" slot="icon-only"></ion-icon>
       </ion-button>
-      <select class="kh-select" [ngModel]="currentYearValue" (ngModelChange)="onYearChange($event)">
-        <option *ngFor="let y of yearOptions" [value]="y.value">{{ y.label }}</option>
+      <select
+        class="kh-select"
+        [ngModel]="currentYearValue"
+        (ngModelChange)="onYearChange($event)"
+      >
+        <option *ngFor="let y of yearOptions" [value]="y.value">
+          {{ y.label }}
+        </option>
       </select>
       <ion-button fill="clear" size="small" (click)="onNextYear()">
         <ion-icon name="chevron-forward-outline" slot="icon-only"></ion-icon>
@@ -33,14 +44,14 @@
 
   <!-- Calendar Card -->
   <div class="calendar-card">
-
     <!-- Header -->
     <div class="calendar-header">
       <div class="kh-date-left">
-        <div *ngFor="let line of initKhDate">{{ line }}</div>
+        <!-- <div *ngFor="let line of initKhDate">{{ line }}</div> -->
+        <p> {{ currentKhmerMonths.join(" - ") }} {{ initKhDate }} </p>
       </div>
       <div class="month-title-center">
-        <h2 class="kh-month-name">{{ currentKhmerMonths.join(' ') }}</h2>
+        <!-- <h2 class="kh-month-name">{{ currentKhmerMonths.join(" - ") }}</h2> -->
         <h3 class="en-month-name">{{ initDateFormatted }}</h3>
       </div>
       <div class="nav-controls">
@@ -56,46 +67,78 @@
 
     <!-- Week Header -->
     <div class="week-header">
-      <div *ngFor="let week of daysOfWeek; let i = index"
-           class="week-cell"
-           [class.sunday]="i === 0">
-        {{ week.km.format('dddd') }}
+      <div
+        *ngFor="let week of daysOfWeek; let i = index"
+        class="week-cell"
+        [class.sunday]="i === 0"
+      >
+        {{ week.km.format("ddd") }}
       </div>
     </div>
 
     <!-- Days Grid -->
-    <div class="days-grid">
-      <div *ngFor="let day of days"
-           class="day-cell"
-           [class.faded]="day.prevMonth || day.nextMonth"
-           [class.today]="isToday(day.date)"
-           [class.saturday]="isSaturday(day.date)"
-           [class.holiday-cambodia]="getHolidayClass(day) === 'holiday-cambodia'"
-           [class.general-event]="getHolidayClass(day) === 'general-event'"
-           (click)="onDayClick(day.date)">
+    <div class="grid grid-cols-7 gap-2 sm:gap-3 p-0 bg-slate-50/5 rounded-2xl">
+      <div
+        *ngFor="let day of days"
+        (click)="onDayClick(day.date)"
+        class="relative group p-2 rounded-md sm:rounded-lg transition-all duration-300 cursor-pointer hover:bg-white hover:shadow-xl hover:shadow-slate-200/50 hover:-translate-y-1"
+        [ngClass]="{
+          'opacity-30 grayscale-[0.5] bg-stone-200/50 hover:bg-stone-200/50' : day.prevMonth || day.nextMonth,
+          'bg-white shadow-sm ring-1 ring-stone-100' : !day.prevMonth && !day.nextMonth,
+          'bg-blue-50 hover:bg-blue-100' : isToday(day.date),
+          '!bg-rose-100 !hover:bg-rose-100' : isSaturday(day.date) || isSunday(day.date) || getHolidayClass(day) === 'holiday-cambodia',
+          'bg-indigo-50/50' : getHolidayClass(day) === 'general-event',
+        }"
+      >
+        <div
+          *ngIf="isBuddhistHolyDay(day)"
+          class="absolute inset-0 flex items-center justify-center opacity-[0.2] group-hover:opacity-[0.3] transition-opacity"
+        >
+          <img
+            src="assets/buddhist-icon.webp"
+            alt=""
+            class="w-4/5 h-4/5 object-contain"
+          />
+        </div>
 
-        <div class="day-inner">
-          <!-- Gregorian number -->
-          <div class="day-number">{{ day.day }}</div>
+        <div class="relative z-10 h-full flex flex-col justify-between">
+          <div class="flex justify-center sm:justify-between items-center sm:items-start">
+            <span
+              class="text-lg sm:text-2xl font-black tracking-tight"
+              [class.text-blue-600]="isToday(day.date)"
+              [class.text-rose-600]="
+                isSaturday(day.date) ||
+                isSunday(day.date) ||
+                getHolidayClass(day) === 'holiday-cambodia'
+              "
+            >
+              {{ day.day }}
+            </span>
 
-          <!-- Khmer lunar info -->
-          <div class="day-kh-info">
-            <div class="kh-day-label">{{ getKhDN(day) }}</div>
-
-            <!-- Buddhist Holy Day icon -->
-            <div *ngIf="isBuddhistHolyDay(day)" class="buddhist-icon-wrapper">
-              <img src="assets/buddhist-icon.webp" alt="Buddhist Holy Day" class="buddhist-icon" />
+            <div *ngIf="isBuddhistHolyDay(day)" class="hidden lg:block">
+              <img
+                src="assets/buddhist-icon.webp"
+                class="w-5 h-5 drop-shadow-sm"
+                alt="Holy Day"
+              />
             </div>
           </div>
-        </div>
 
-        <!-- Khmer month label on first day of each Khmer month -->
-        <div *ngIf="showKhmerMonth(day)" class="kh-month-label">
-          {{ getKhMonth(day) }}
-        </div>
+          <div class="flex flex-col items-center sm:items-end">
+            <span
+              class="text-[10px] sm:text-xs font-medium text-slate-500 leading-tight"
+            >
+              {{ getKhDN(day) }}
+            </span>
 
+            <span
+              class="text-[9px] sm:text-[11px] font-bold text-blue-500 uppercase tracking-wider mt-0.5"
+            >
+              {{ getKhMonth(day) }}
+            </span>
+          </div>
+        </div>
       </div>
     </div>
-
   </div>
 </div>

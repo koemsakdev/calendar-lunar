@@ -26,11 +26,25 @@ export interface KhmerDateResult {
   };
 }
 
+
+
 // Resolve lib — handles both ESM default-interop and direct named exports
 const lib: any = (momentkhLib as any).default ?? momentkhLib;
 
 @Injectable({ providedIn: 'root' })
 export class KhmerDateService {
+  private readonly khDigits: Record<string, string> = {
+    '0': '០',
+    '1': '១',
+    '2': '២',
+    '3': '៣',
+    '4': '៤',
+    '5': '៥',
+    '6': '៦',
+    '7': '៧',
+    '8': '៨',
+    '9': '៩',
+  };
 
   fromMoment(m: moment.Moment): KhmerDateResult {
     return lib.fromGregorian(
@@ -63,6 +77,14 @@ export class KhmerDateService {
 
   toKhDateMulti(m: moment.Moment, ...tokens: string[]): string[] {
     return tokens.map(t => this.format(m, t));
+  }
+
+  toKhmerNumber(input: string | number): string {
+    return input
+      .toString()
+      .split('')
+      .map(d => this.khDigits[d] ?? d)
+      .join('');
   }
 
   khDay(m: moment.Moment): number {

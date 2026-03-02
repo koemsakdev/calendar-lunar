@@ -40,7 +40,7 @@ export class CalendarStoreService {
   constructor(
     private kh: KhmerDateService,
     private publicHolidaysService: PublicHolidaysService
-  ) {}
+  ) { }
 
   initDay(): void {
     const date = this.initDate();
@@ -131,7 +131,9 @@ export class CalendarStoreService {
     const beYear = date.clone().month() + 1 <= 4
       ? date.clone().add(543, 'years').locale('km').format('YYYY')
       : date.clone().add(544, 'years').locale('km').format('YYYY');
-    const khDateStr = this.kh.format(date.clone(), 'ឆ្នាំa_e_ព.ស') + beYear;
+    const khBeYear = this.kh.toKhmerNumber(beYear);
+    const raw = this.kh.format(date.clone(), 'ឆ្នាំa_e_ព.ស')
+    const khDateStr = raw.split('_').join(', ') + ' ' + khBeYear;
     this.initKhDate.set(khDateStr.split('_'));
 
     // Sort attrs

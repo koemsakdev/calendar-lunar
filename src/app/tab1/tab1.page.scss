@@ -1,4 +1,10 @@
 // tab1.page.scss
+@import url('https://fonts.googleapis.com/css2?family=Siemreap&family=Sora:wght@100..800&display=swap');
+
+* {
+  box-sizing: border-box;
+  font-family: "Sora", "Siemreap", sans-serif;
+}
 
 .page-layout {
   display: flex;
