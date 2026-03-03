@@ -4,22 +4,17 @@ import {
   IonToolbar,
   IonTitle,
   IonContent,
-  IonModal,
-  IonButtons,
-  IonButton,
-  IonIcon,
-  IonList,
-  IonItem,
-  IonLabel,
+  IonIcon
 } from '@ionic/angular/standalone';
 import * as moment from 'moment';
 import { CommonModule } from '@angular/common';
 import { CalendarComponent } from '../components/calendar/calendar.component';
 import { HolidaysListComponent } from '../components/holidays-list/holidays-list.component';
-import { CalendarStoreService, CalendarAttribute } from '../services/calendar-store.service';
+import { CalendarStoreService, CalendarAttribute, CalendarDay } from '../services/calendar-store.service';
 import { KhmerDateService } from '../services/khmer-date.service';
 import { addIcons } from 'ionicons';
 import { closeOutline, flagOutline, calendarOutline } from 'ionicons/icons';
+import { FilterModalComponent } from '../shared/filter-modal/filter-modal.component';
 
 export interface DayDetail {
   date: moment.Moment;
@@ -38,13 +33,8 @@ export interface DayDetail {
     IonToolbar,
     IonTitle,
     IonContent,
-    IonModal,
-    IonButtons,
-    IonButton,
     IonIcon,
-    IonList,
-    IonItem,
-    IonLabel,
+    FilterModalComponent,
   ],
 })
 export class Tab1Page {
@@ -81,8 +71,26 @@ export class Tab1Page {
     return title?.kh ?? '';
   }
 
+  getTitleKh(attr: CalendarAttribute): string {
+    const title = attr.customData.title as { kh: string; en: string };
+    return title?.kh ?? '';
+  }
+
+  getTitleEn(attr: CalendarAttribute): string {
+    const title = attr.customData.title as { kh: string; en: string };
+    return title?.en ?? '';
+  }
+
   isHoliday(attr: CalendarAttribute): boolean {
     return attr.customData.description === 'Holiday in Cambodia';
+  }
+
+  isModalBuddhistHolyDay(): boolean {
+    if (!this.modalDetail?.attributes?.length) return false;
+
+    return this.modalDetail.attributes.some(
+      attr => attr.customData?.description === 'Buddhist Holy Day'
+    );
   }
 
   formatKhDate(date: moment.Moment): string {

@@ -1,78 +1,142 @@
 <!-- calendar.component.html -->
 
 <div class="calendar-wrapper">
-  <!-- Month & Year Selectors -->
-  <div class="selector-bar">
-    <div class="selector-group">
-      <span class="selector-label">Month:</span>
-      <ion-button fill="clear" size="small" (click)="onPrev()">
-        <ion-icon name="chevron-back-outline" slot="icon-only"></ion-icon>
-      </ion-button>
-      <select
-        class="kh-select"
-        [ngModel]="currentMonthValue"
-        (ngModelChange)="onMonthChange($event)"
-      >
-        <option *ngFor="let m of monthOptions" [value]="m.value">
-          {{ m.label }}
-        </option>
-      </select>
-      <ion-button fill="clear" size="small" (click)="onNext()">
-        <ion-icon name="chevron-forward-outline" slot="icon-only"></ion-icon>
-      </ion-button>
+  <div class="mb-4 flex items-center gap-2">
+    <img
+      src="assets/calendar-khmer-logo.png"
+      alt=""
+      class="w-14 object-contain"
+    />
+    <div class="flex flex-col gap-2 mt-2">
+      <h1 class="text-base font-bold tracking-tight">
+        {{ currentKhmerMonths.join(" - ") }} {{ initKhDate }}
+      </h1>
+      <span class="text-lg text-gray-800">
+        {{ initDateFormatted }}
+      </span>
     </div>
-
-    <div class="selector-group">
-      <span class="selector-label">Year:</span>
-      <ion-button fill="clear" size="small" (click)="onPrevYear()">
-        <ion-icon name="chevron-back-outline" slot="icon-only"></ion-icon>
-      </ion-button>
-      <select
-        class="kh-select"
-        [ngModel]="currentYearValue"
-        (ngModelChange)="onYearChange($event)"
+  </div>
+  <div
+    class="flex items-center justify-between border-t border-neutral-300 dark:border-neutral-700 py-4"
+  >
+    <div class="flex items-center gap-2">
+      <!-- Month -->
+      <button
+        class="flex items-center gap-2 px-4 py-1 bg-neutral-100 dark:bg-neutral-800 rounded-md text-sm font-medium hover:bg-neutral-200 transition"
+        (click)="toggleMonthModal()"
       >
-        <option *ngFor="let y of yearOptions" [value]="y.value">
-          {{ y.label }}
-        </option>
-      </select>
-      <ion-button fill="clear" size="small" (click)="onNextYear()">
-        <ion-icon name="chevron-forward-outline" slot="icon-only"></ion-icon>
+        <span>{{ currentMonthLabel }}</span>
+
+        <ion-icon
+          [name]="
+            monthModalOpen() ? 'chevron-up-outline' : 'chevron-down-outline'
+          "
+          class="text-sm transition-transform duration-200"
+        ></ion-icon>
+      </button>
+
+      <!-- Year -->
+      <button
+        class="flex items-center gap-2 px-4 py-1 bg-neutral-100 dark:bg-neutral-800 rounded-md text-sm font-medium hover:bg-neutral-200 transition"
+        (click)="toggleYearModal()"
+      >
+        <span>{{ currentYearValue }}</span>
+
+        <ion-icon
+          [name]="
+            yearModalOpen() ? 'chevron-up-outline' : 'chevron-down-outline'
+          "
+          class="text-sm transition-transform duration-200"
+        ></ion-icon>
+      </button>
+    </div>
+    <div class="flex items-center gap-1 text-sm">
+      <ion-button fill="clear" size="small" (click)="onPrev()">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+      </ion-button>
+
+      <button
+        (click)="reset()"
+        class="px-3 py-1 bg-neutral-100 dark:bg-neutral-800 rounded-md text-sm font-medium hover:bg-neutral-200 transition"
+      >
+        ថ្ងៃនេះ
+      </button>
+
+      <ion-button fill="clear" size="small" (click)="onNext()">
+        <ion-icon name="chevron-forward-outline"></ion-icon>
       </ion-button>
     </div>
   </div>
 
-  <!-- Calendar Card -->
-  <div class="calendar-card">
-    <!-- Header -->
-    <div class="calendar-header">
-      <div class="kh-date-left">
-        <!-- <div *ngFor="let line of initKhDate">{{ line }}</div> -->
-        <p> {{ currentKhmerMonths.join(" - ") }} {{ initKhDate }} </p>
-      </div>
-      <div class="month-title-center">
-        <!-- <h2 class="kh-month-name">{{ currentKhmerMonths.join(" - ") }}</h2> -->
-        <h3 class="en-month-name">{{ initDateFormatted }}</h3>
-      </div>
-      <div class="nav-controls">
-        <ion-button fill="clear" size="small" (click)="onPrev()">
-          <ion-icon name="chevron-back-outline" slot="icon-only"></ion-icon>
-        </ion-button>
-        <button class="reset-dot" (click)="reset()"></button>
-        <ion-button fill="clear" size="small" (click)="onNext()">
-          <ion-icon name="chevron-forward-outline" slot="icon-only"></ion-icon>
-        </ion-button>
+  <app-filter-modal
+    [isOpen]="monthModalOpen()"
+    title="Select Month"
+    (closed)="monthModalOpen.set(false)"
+  >
+    <div class="grid grid-cols-3 md:grid-cols-4 gap-3">
+      <div
+        *ngFor="let m of monthOptions"
+        (click)="selectMonth(m.value); monthModalOpen.set(false)"
+        class="py-2 text-center rounded-md border cursor-pointer"
+        [ngClass]="{
+          'bg-blue-500 text-white dark:bg-blue-400 dark:text-black':
+            m.value === currentMonthValue,
+          'hover:bg-blue-500/10': m.value !== currentMonthValue,
+        }"
+      >
+        {{ m.label }}
       </div>
     </div>
+  </app-filter-modal>
 
+  <app-filter-modal
+    [isOpen]="yearModalOpen()"
+    title="Select Year"
+    (closed)="yearModalOpen.set(false)"
+  >
+    <div class="sticky top-0 bg-white dark:bg-neutral-900 pb-4 z-10">
+      <input
+        type="text"
+        placeholder="Search year..."
+        class="w-full px-4 py-3 rounded-full border border-neutral-100 dark:border-neutral-700 text-sm focus:outline-none focus:ring-1 bg-slate-50 dark:bg-slate-800 transition"
+        [ngModel]="yearSearchQuery()"
+        (ngModelChange)="yearSearchQuery.set($event)"
+      />
+    </div>
+
+    <div #yearList class="space-y-2 max-h-[65vh] overflow-y-auto scroll-smooth">
+      <div
+        *ngFor="let y of filteredYears(); let i = index"
+        [attr.data-year]="y.value"
+        (click)="selectYear(y.value); yearModalOpen.set(false)"
+        class="flex items-center justify-between px-2 py-2 rounded-sm cursor-pointer transition-all duration-150 hover:bg-primary/10 border-b border-neutral-300 dark:border-neutral-600"
+        [ngClass]="{
+          'bg-primary/15 text-primary': y.value === currentYearValue,
+        }"
+      >
+        <span class="text-base">{{ y.label }}</span>
+
+        <ion-icon
+          *ngIf="y.value === currentYearValue"
+          name="checkmark-outline"
+          class="text-primary text-lg"
+        ></ion-icon>
+      </div>
+    </div>
+  </app-filter-modal>
+
+  <!-- Calendar Card -->
+  <div class="calendar-card">
     <!-- Week Header -->
-    <div class="week-header">
+    <div
+      class="grid grid-cols-7 gap-1 border border-stone-100 rounded-md overflow-hidden mb-2 font-bold text-[12px] md:text-[14px]"
+    >
       <div
         *ngFor="let week of daysOfWeek; let i = index"
-        class="week-cell"
-        [class.sunday]="i === 0"
+        class="text-center py-2 px-1 truncate"
+        [class.text-red-600]="i === 0 || i === 6"
       >
-        {{ week.km.format("ddd") }}
+        {{ week.km.format("dddd") }}
       </div>
     </div>
 
@@ -83,11 +147,16 @@
         (click)="onDayClick(day.date)"
         class="relative group p-2 rounded-md sm:rounded-lg transition-all duration-300 cursor-pointer hover:bg-white hover:shadow-xl hover:shadow-slate-200/50 hover:-translate-y-1"
         [ngClass]="{
-          'opacity-30 grayscale-[0.5] bg-stone-200/50 hover:bg-stone-200/50' : day.prevMonth || day.nextMonth,
-          'bg-white shadow-sm ring-1 ring-stone-100' : !day.prevMonth && !day.nextMonth,
-          'bg-blue-50 hover:bg-blue-100' : isToday(day.date),
-          '!bg-rose-100 !hover:bg-rose-100' : isSaturday(day.date) || isSunday(day.date) || getHolidayClass(day) === 'holiday-cambodia',
-          'bg-indigo-50/50' : getHolidayClass(day) === 'general-event',
+          'opacity-30 grayscale-[0.5] bg-stone-100 hover:bg-stone-100':
+            day.prevMonth || day.nextMonth,
+          'bg-white shadow-sm ring-1 ring-stone-100':
+            !day.prevMonth && !day.nextMonth,
+          'bg-blue-200 hover:bg-blue-300': isToday(day.date),
+          '!bg-rose-100 !hover:bg-rose-100':
+            isSaturday(day.date) ||
+            isSunday(day.date) ||
+            getHolidayClass(day) === 'holiday-cambodia',
+          'bg-indigo-50/50': getHolidayClass(day) === 'general-event',
         }"
       >
         <div
@@ -102,7 +171,9 @@
         </div>
 
         <div class="relative z-10 h-full flex flex-col justify-between">
-          <div class="flex justify-center sm:justify-between items-center sm:items-start">
+          <div
+            class="flex justify-center sm:justify-between items-center sm:items-start"
+          >
             <span
               class="text-lg sm:text-2xl font-black tracking-tight"
               [class.text-blue-600]="isToday(day.date)"
@@ -129,12 +200,6 @@
               class="text-[10px] sm:text-xs font-medium text-slate-500 leading-tight"
             >
               {{ getKhDN(day) }}
-            </span>
-
-            <span
-              class="text-[9px] sm:text-[11px] font-bold text-blue-500 uppercase tracking-wider mt-0.5"
-            >
-              {{ getKhMonth(day) }}
             </span>
           </div>
         </div>

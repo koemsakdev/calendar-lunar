@@ -18,22 +18,22 @@
   }
 }
 
-.calendar-section {
-  width: 100%;
+// .calendar-section {
+//   width: 100%;
 
-  @media (min-width: 1024px) {
-    width: 66.666%;
-    flex-shrink: 0;
-  }
-}
+//   @media (min-width: 1024px) {
+//     width: 66.666%;
+//     flex-shrink: 0;
+//   }
+// }
 
-.sidebar-section {
-  width: 100%;
+// .sidebar-section {
+//   width: 100%;
 
-  @media (min-width: 1024px) {
-    flex: 1;
-  }
-}
+//   @media (min-width: 1024px) {
+//     flex: 1;
+//   }
+// }
 
 // Modal
 .modal-date-header {

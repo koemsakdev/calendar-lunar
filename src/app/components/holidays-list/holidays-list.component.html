@@ -1,26 +1,69 @@
 <!-- holidays-list.component.html -->
-<!-- Converted from TheHolidaysList.vue -->
-
-<div class="holidays-container">
-  <h2 class="holidays-title">
-    {{ 'ព្រឹត្តិការណ៍ប្រចាំខែ' + monthLabel }}
+<div class="w-full mx-auto py-6">
+  <!-- Header -->
+  <h2
+    class="text-xl md:text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-6"
+  >
+    {{ "ព្រឹត្តិការណ៍ប្រចាំខែ " + monthLabel }}
   </h2>
 
-  <ol class="timeline-list">
-    <li
-      *ngFor="let holiday of filteredAttributes"
-      class="timeline-item"
-      [class.holiday]="isHoliday(holiday)"
-      [class.general]="!isHoliday(holiday)"
-    >
-      <div class="timeline-dot"></div>
-      <time class="timeline-date">{{ formatDate(holiday.dates) }}</time>
-      <h3 class="timeline-title-kh">{{ getTitleKh(holiday) }}</h3>
-      <p class="timeline-title-en">{{ getTitleEn(holiday) }}</p>
+  <!-- Timeline -->
+  <ol class="space-y-2">
+    <li *ngFor="let holiday of filteredAttributes">
+      <div
+        class="rounded-lg shadow-sm p-3 transition-all duration-200 hover:shadow-md"
+        [ngClass]=" isHoliday(holiday) ? 'bg-red-50 dark:bg-red-900/20' : 'bg-blue-50/50 dark:bg-sky-800'"
+      >
+        <!-- Date -->
+        <time
+          class="block text-xs font-medium mb-2"
+          [ngClass]="
+            isHoliday(holiday)
+              ? 'text-red-500'
+              : 'text-blue-500 dark:text-gray-400'
+          "
+        >
+          {{ formatDate(holiday.dates) }}
+        </time>
+
+        <!-- Khmer Title -->
+        <h3
+          class="text-sm md:text-lg font-semibold"
+          [ngClass]="
+            isHoliday(holiday)
+              ? 'text-red-500'
+              : 'text-blue-600 dark:text-white'
+          "
+        >
+          {{ getTitleKh(holiday) }}
+        </h3>
+
+        <!-- English Title -->
+        <p
+          class="text-xs mt-1"
+          [ngClass]="
+            isHoliday(holiday)
+              ? 'text-red-400'
+              : 'text-gray-600 dark:text-gray-300'
+          "
+        >
+          {{ getTitleEn(holiday) }}
+        </p>
+      </div>
     </li>
   </ol>
 
-  <div *ngIf="filteredAttributes.length === 0" class="empty-state">
-    <p>No events this month</p>
+  <!-- Empty State -->
+  <div
+    *ngIf="filteredAttributes.length === 0"
+    class="mt-10 flex flex-col items-center justify-center text-center text-gray-500 dark:text-gray-400"
+  >
+    <div
+      class="w-16 h-16 rounded-full bg-gray-100 dark:bg-neutral-800 flex items-center justify-center mb-4"
+    >
+      <ion-icon name="calendar-outline" class="text-2xl"></ion-icon>
+    </div>
+
+    <p class="text-sm">No events this month</p>
   </div>
 </div>

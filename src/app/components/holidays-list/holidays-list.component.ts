@@ -45,4 +45,8 @@ export class HolidaysListComponent {
   isHoliday(attr: CalendarAttribute): boolean {
     return attr.customData.description === 'Holiday in Cambodia';
   }
+
+  isToday(attr: CalendarAttribute): boolean {
+    return attr.customData.description === 'today';
+  }
 }
