@@ -2,6 +2,7 @@
 
 // ── Event Card ───────────────────────────────────────────────────
 .event-card {
+  padding: 12px 12px 12px 0;
   @apply relative flex items-start rounded-xl overflow-hidden
          transition-all duration-200;
 
@@ -18,8 +19,6 @@
     @apply bg-blue-50 dark:bg-blue-950
            ring-1 ring-blue-100 dark:ring-blue-900;
   }
-
-  padding: 12px 12px 12px 0;
 }
 
 // ── Left Accent Stripe ───────────────────────────────────────────

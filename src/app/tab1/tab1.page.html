@@ -2,7 +2,7 @@
 
 <ion-header>
   <ion-toolbar>
-    <ion-title>ប្រតិទិនកូនខ្មែរ</ion-title>
+    <ion-title style="line-height: 1.8">ប្រតិទិនកូនខ្មែរ</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -26,97 +26,159 @@
     title="ព័តមានលម្អិត"
     (closed)="closeModal()"
   >
-    <ion-content class="bg-gray-50 dark:bg-neutral-900 space-y-8 relative z-10">
-      <ng-container *ngIf="modalDetail">
-        <!-- Header Section -->
-        <div class="pt-2 pb-6 border-b border-gray-200 dark:border-neutral-700">
-          <h4
-            class="text-lg md:text-xl font-semibold text-gray-900 dark:text-white"
-          >
-            {{ getDateKhmerLunar(modalDetail.date) }}, ត្រូវនឹងថ្ងៃទី {{
-            formatKhDate(modalDetail.date) }}
-          </h4>
+    <ng-container *ngIf="modalDetail">
+      <!-- ── Date Header ─────────────────────────────────────── -->
+      <div class="relative mb-5">
+        <!-- Buddhist watermark behind header -->
+        <div
+          *ngIf="isModalBuddhistHolyDay()"
+          class="absolute -top-2 -right-2 w-24 h-24 opacity-[0.07] pointer-events-none"
+        >
+          <img
+            src="assets/buddhist-icon.webp"
+            class="w-full h-full object-contain"
+          />
+        </div>
 
-          <p class="text-blue-500 text-lg md:text-xl mt-4">
+        <!-- Khmer lunar date -->
+        <div class="flex items-center gap-2 mb-2">
+          <div class="w-1 h-5 rounded-full bg-[#F04923]"></div>
+          <p
+            class="font-moul text-sm text-[#F04923] dark:text-[#FF7A52] leading-loose overflow-visible"
+          >
+            {{ getDateKhmerLunar(modalDetail.date) }}
+          </p>
+        </div>
+
+        <!-- Gregorian dates -->
+        <div class="pl-3">
+          <h4
+            class="font-moul text-base text-neutral-800 dark:text-neutral-100 leading-loose overflow-visible"
+          >
+            {{ formatKhDate(modalDetail.date) }}
+          </h4>
+          <p
+            class="font-siemreap text-sm text-neutral-500 dark:text-neutral-400 mt-0.5 leading-loose"
+          >
             {{ formatEnDate(modalDetail.date) }}
           </p>
         </div>
 
-        <!-- Events List -->
-        <div class="space-y-2">
-          <div
-            *ngFor="let attr of modalDetail.attributes"
-            class="flex items-start gap-4 p-4 rounded-lg shadow-sm transition-all duration-200 hover:shadow-md"
-            [ngClass]="
-          isHoliday(attr)
-            ? 'bg-red-50 dark:bg-red-900/20'
-            : 'bg-blue-50 dark:bg-neutral-800'
-        "
+        <!-- Buddhist holy day badge -->
+        <div *ngIf="isModalBuddhistHolyDay()" class="pl-3 mt-2">
+          <span
+            class="inline-flex items-center gap-1.5 font-siemreap text-[11px] px-2.5 py-1 rounded-full bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 border border-amber-200 dark:border-amber-800"
+            style="line-height: 1.8"
           >
-            <!-- Icon -->
-            <div
-              class="flex items-center justify-center w-10 h-10 rounded-xl"
-              [ngClass]="
-            isHoliday(attr)
-              ? 'bg-red-100 text-red-500'
-              : 'bg-blue-100 text-blue-500'
-          "
-            >
-              <ion-icon
-                [name]="isHoliday(attr) ? 'flag-outline' : 'calendar-outline'"
-                class="text-lg"
-              ></ion-icon>
-            </div>
-
-            <!-- Text -->
-            <div class="flex-1">
-              <h5
-                class="text-base font-semibold"
-                [ngClass]="
-              isHoliday(attr)
-                ? 'text-red-500'
-                : 'text-gray-900 dark:text-white'
-            "
-              >
-                {{ getTitleKh(attr) }}
-              </h5>
-              <p
-                class="text-sm"
-                [ngClass]="
-              isHoliday(attr)
-                ? 'text-red-500'
-                : 'text-gray-900 dark:text-white'
-            "
-              >
-                {{ getTitleEn(attr) }}
-              </p>
-            </div>
-          </div>
-
-          <!-- Empty State -->
-          <div
-            *ngIf="!modalDetail.attributes?.length"
-            class="flex flex-col items-center justify-center text-center py-10 text-gray-500 dark:text-gray-400"
-          >
-            <div
-              class="w-16 h-16 rounded-full bg-gray-100 dark:bg-neutral-800 flex items-center justify-center mb-4"
-            >
-              <ion-icon name="calendar-outline" class="text-2xl"></ion-icon>
-            </div>
-            <p class="text-sm">No events on this day</p>
-          </div>
+            <img
+              src="assets/buddhist-icon.webp"
+              class="w-3.5 h-3.5 object-contain"
+            />
+            ថ្ងៃសីល
+          </span>
         </div>
+      </div>
 
+      <!-- ── Divider ──────────────────────────────────────────── -->
+      <div
+        class="border-t border-neutral-100 dark:border-neutral-800 mb-5"
+      ></div>
+
+      <!-- ── Events List ─────────────────────────────────────── -->
+      <div class="space-y-2.5">
         <div
-          *ngIf="isModalBuddhistHolyDay()"
-          class="absolute -top-4 -right-4 opacity-[0.08] pointer-events-none"
+          *ngFor="let attr of modalDetail.attributes"
+          class="flex items-stretch rounded-xl overflow-hidden transition-all duration-200"
+          [ngClass]="{
+          'bg-red-50 dark:bg-red-950 ring-1 ring-red-100 dark:ring-red-900':         getAttrType(attr) === 'holiday',
+          'bg-amber-50 dark:bg-amber-950 ring-1 ring-amber-100 dark:ring-amber-900': getAttrType(attr) === 'traditional',
+          'bg-blue-50 dark:bg-blue-950 ring-1 ring-blue-100 dark:ring-blue-900':     getAttrType(attr) === 'general'
+        }"
         >
-          <img
-            src="assets/buddhist-icon.webp"
-            class="w-full object-contain"
-          />
+          <!-- Left stripe -->
+          <div
+            class="w-1 flex-shrink-0"
+            [ngClass]="{
+            'bg-[#F04923]': getAttrType(attr) === 'holiday',
+            'bg-amber-500': getAttrType(attr) === 'traditional',
+            'bg-blue-400':  getAttrType(attr) === 'general'
+          }"
+          ></div>
+
+          <!-- Icon -->
+          <div
+            class="flex items-center justify-center w-10 flex-shrink-0 my-3 ml-3 rounded-xl"
+            [ngClass]="{
+            'bg-[#F04923]/10 text-[#F04923]': getAttrType(attr) === 'holiday',
+            'bg-amber-100 dark:bg-amber-900/40 text-amber-600 dark:text-amber-400': getAttrType(attr) === 'traditional',
+            'bg-blue-100 dark:bg-blue-900/40 text-blue-500 dark:text-blue-400':     getAttrType(attr) === 'general'
+          }"
+          >
+            <ion-icon
+              [name]="getAttrType(attr) === 'holiday' ? 'flag-outline' :
+                    getAttrType(attr) === 'traditional' ? 'moon-outline' : 'calendar-outline'"
+              class="text-lg"
+            ></ion-icon>
+          </div>
+
+          <!-- Text -->
+          <div class="flex-1 min-w-0 px-3 py-3">
+            <h5
+              class="font-moul text-sm leading-loose overflow-visible"
+              [ngClass]="{
+              'text-[#F04923] dark:text-[#FF7A52]':       getAttrType(attr) === 'holiday',
+              'text-amber-700 dark:text-amber-300':        getAttrType(attr) === 'traditional',
+              'text-blue-700 dark:text-blue-300':          getAttrType(attr) === 'general'
+            }"
+            >
+              {{ getTitleKh(attr) }}
+            </h5>
+
+            <p
+              class="font-siemreap text-xs text-neutral-500 dark:text-neutral-400 mt-0.5 leading-relaxed"
+            >
+              {{ getTitleEn(attr) }}
+            </p>
+          </div>
+
+          <!-- Badge -->
+          <div class="flex-shrink-0 self-start pt-3 pr-3">
+            <span
+              class="font-siemreap text-[10px] px-2 py-0.5 rounded-full"
+              style="line-height: 1.8"
+              [ngClass]="{
+              'bg-[#F04923]/10 text-[#F04923] dark:bg-[#F04923]/20 dark:text-[#FF7A52]': getAttrType(attr) === 'holiday',
+              'bg-amber-100 dark:bg-amber-900/40 text-amber-600 dark:text-amber-400':    getAttrType(attr) === 'traditional',
+              'bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400':        getAttrType(attr) === 'general'
+            }"
+              >{{ getAttrBadgeLabel(attr) }}</span
+            >
+          </div>
         </div>
-      </ng-container>
-    </ion-content>
+
+        <!-- ── Empty State ──────────────────────────────────── -->
+        <div
+          *ngIf="!modalDetail.attributes?.length"
+          class="flex flex-col items-center justify-center text-center py-10"
+        >
+          <div
+            class="w-14 h-14 rounded-full bg-[#F04923]/10 flex items-center justify-center mb-3"
+          >
+            <ion-icon
+              name="calendar-outline"
+              class="text-2xl text-[#F04923]"
+            ></ion-icon>
+          </div>
+          <p
+            class="font-moul text-sm text-neutral-400 dark:text-neutral-500 leading-loose"
+          >
+            គ្មានព្រឹត្តិការណ៍ថ្ងៃនេះ
+          </p>
+          <p class="font-siemreap text-xs text-neutral-400 mt-1">
+            No events on this day
+          </p>
+        </div>
+      </div>
+    </ng-container>
   </app-filter-modal>
 </ion-content>

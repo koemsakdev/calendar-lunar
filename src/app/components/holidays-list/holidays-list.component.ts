@@ -1,6 +1,9 @@
 import { Component, inject } from '@angular/core';
 import moment from 'moment';
-import { CalendarStoreService, CalendarAttribute } from '../../services/calendar-store.service';
+import {
+  CalendarStoreService,
+  CalendarAttribute,
+} from '../../services/calendar-store.service';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 
@@ -48,5 +51,26 @@ export class HolidaysListComponent {
 
   isToday(attr: CalendarAttribute): boolean {
     return attr.customData.description === 'today';
+  }
+
+  isTraditional(attr: CalendarAttribute): boolean {
+    return (
+      attr.customData.description === 'Buddhist Holy Day' ||
+      attr.key.startsWith('traditional_events') ||
+      attr.key.startsWith('traditional_holidays')
+    );
+  }
+
+  getType(attr: CalendarAttribute): 'holiday' | 'traditional' | 'general' {
+    if (this.isHoliday(attr)) return 'holiday';
+    if (this.isTraditional(attr)) return 'traditional';
+    return 'general';
+  }
+
+  getBadgeLabel(attr: CalendarAttribute): string {
+    const type = this.getType(attr);
+    if (type === 'holiday') return 'បុណ្យជាតិ';
+    if (type === 'traditional') return 'ប្រពៃណី';
+    return 'ទូទៅ';
   }
 }

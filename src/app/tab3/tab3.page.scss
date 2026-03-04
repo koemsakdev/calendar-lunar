@@ -1,0 +1,356 @@
+// Add these into your global.scss
+// ── Khmer Alert styles ────────────────────────────────────────────
+
+.khmer-alert {
+  .alert-wrapper {
+    border-radius: 20px !important;
+    padding: 4px;
+    background: white;
+
+    .dark & {
+      background: #1a1a1a;
+    }
+  }
+
+  .alert-head {
+    padding: 20px 20px 8px;
+
+    .alert-title {
+      font-family: 'Moul', serif !important;
+      font-size: 16px !important;
+      color: #F04923 !important;
+      line-height: 1.8 !important;
+    }
+
+    .alert-sub-title {
+      font-family: 'Moul', serif !important;
+      font-size: 13px !important;
+      color: #262626 !important;
+      line-height: 1.8 !important;
+      margin-top: 4px;
+
+      .dark & { color: #f5f5f5 !important; }
+    }
+  }
+
+  .alert-message {
+    font-family: 'Siemreap', serif !important;
+    font-size: 13px !important;
+    line-height: 1.8 !important;
+    color: #525252 !important;
+    padding: 0 20px 16px !important;
+    white-space: pre-line;
+
+    .dark & { color: #a3a3a3 !important; }
+  }
+
+  .alert-button-group {
+    padding: 0 12px 12px !important;
+    gap: 8px;
+
+    .alert-btn-cancel {
+      button {
+        border-radius: 12px !important;
+        font-family: 'Siemreap', serif !important;
+        font-size: 13px !important;
+        background: #f5f5f5 !important;
+        color: #525252 !important;
+      }
+    }
+
+    .alert-btn-danger {
+      button {
+        border-radius: 12px !important;
+        font-family: 'Siemreap', serif !important;
+        font-size: 13px !important;
+        background: #F04923 !important;
+        color: white !important;
+      }
+    }
+  }
+}
+
+// Reminder fire alert — slightly distinct
+.reminder-alert {
+  .alert-wrapper {
+    border: 2px solid rgba(139, 92, 246, 0.3); // violet ring
+  }
+
+  .alert-head .alert-title {
+    color: #7c3aed !important; // violet for reminder
+  }
+}
+
+// ── Paste this entire block into global.scss ──────────────────────
+
+// ── Picker bottom sheet modal ─────────────────────────────────────
+.picker-modal {
+  --border-radius: 28px 28px 0 0;
+  --box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.12);
+
+  &::part(content) {
+    border-radius: 28px 28px 0 0;
+    overflow: hidden;
+  }
+
+  &::part(backdrop) {
+    --backdrop-opacity: 0.35;
+  }
+}
+
+// ── IonDatetime shared styles ─────────────────────────────────────
+ion-datetime.custom-datetime {
+  --background: transparent;
+  border-radius: 20px;
+  width: 100%;
+
+  // ── Month/year header button ─────────────────────────────────
+  &::part(month-year-button) {
+    font-family: 'Sora', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: #1a1a1a;
+    letter-spacing: -0.3px;
+
+    .dark & { color: #f5f5f5; }
+  }
+
+  // ── Prev / Next arrows ───────────────────────────────────────
+  &::part(prev-button),
+  &::part(next-button) {
+    color: #F04923;
+    background: rgba(240, 73, 35, 0.08);
+    border-radius: 12px;
+    width: 36px;
+    height: 36px;
+    transition: background 0.15s;
+
+    &:hover { background: rgba(240, 73, 35, 0.18); }
+  }
+
+  // ── Day of week headers ──────────────────────────────────────
+  &::part(day-of-week) {
+    font-family: 'Sora', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: #a3a3a3;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  // ── All calendar day cells ───────────────────────────────────
+  &::part(calendar-day) {
+    font-family: 'Sora', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 12px;
+    color: #262626;
+    transition: all 0.15s;
+    width: 36px;
+    height: 36px;
+
+    .dark & { color: #e5e5e5; }
+  }
+
+  // ── Today ────────────────────────────────────────────────────
+  &::part(calendar-day today) {
+    font-weight: 700;
+    color: #F04923;
+    background: rgba(240, 73, 35, 0.08);
+    border-radius: 12px;
+  }
+
+  // ── Selected ─────────────────────────────────────────────────
+  &::part(calendar-day active),
+  &::part(calendar-day active today) {
+    background: #F04923 !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 14px rgba(240, 73, 35, 0.4) !important;
+  }
+
+  // ── Hover ────────────────────────────────────────────────────
+  &::part(calendar-day):not([disabled]):hover {
+    background: rgba(240, 73, 35, 0.1);
+    color: #F04923;
+  }
+
+  // ── Time display numbers ─────────────────────────────────────
+  &::part(time-button) {
+    font-family: 'Sora', sans-serif;
+    font-size: 52px;
+    font-weight: 800;
+    color: #1a1a1a;
+    letter-spacing: -2px;
+    background: transparent;
+
+    .dark & { color: #f5f5f5; }
+  }
+
+  // ── Time button active/focus state ───────────────────────────
+  &::part(time-button):focus,
+  &::part(time-button).time-active {
+    background: rgba(240, 73, 35, 0.08);
+    border-radius: 14px;
+    color: #F04923;
+  }
+
+  // ── AM/PM pill ───────────────────────────────────────────────
+  &::part(am-pm-button) {
+    font-family: 'Sora', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: #F04923;
+    background: rgba(240, 73, 35, 0.1);
+    border-radius: 14px;
+    padding: 8px 14px;
+    border: 1.5px solid rgba(240, 73, 35, 0.2);
+    transition: all 0.15s;
+
+    &:hover { background: rgba(240, 73, 35, 0.2); }
+  }
+
+  // ── Time colon separator ─────────────────────────────────────
+  &::part(time-colon) {
+    font-family: 'Sora', sans-serif;
+    font-size: 52px;
+    font-weight: 800;
+    color: #d4d4d4;
+    letter-spacing: 0;
+
+    .dark & { color: #404040; }
+  }
+
+  // ── Action buttons row ───────────────────────────────────────
+  &::part(buttons) {
+    padding: 12px 16px 16px;
+    gap: 10px;
+    border-top: 1px solid #f0f0f0;
+
+    .dark & { border-top-color: #2a2a2a; }
+  }
+
+  &::part(cancel-button) {
+    font-family: 'Siemreap', serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #737373;
+    background: #f5f5f5;
+    border-radius: 14px;
+    padding: 10px 20px;
+    transition: background 0.15s;
+
+    .dark & {
+      background: #2a2a2a;
+      color: #a3a3a3;
+    }
+
+    &:hover { background: #e5e5e5; }
+  }
+
+  &::part(confirm-button) {
+    font-family: 'Siemreap', serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: #ffffff;
+    background: #F04923;
+    border-radius: 14px;
+    padding: 10px 24px;
+    box-shadow: 0 4px 14px rgba(240, 73, 35, 0.35);
+    transition: all 0.15s;
+
+    &:hover {
+      background: #D43F1F;
+      box-shadow: 0 6px 20px rgba(240, 73, 35, 0.45);
+    }
+  }
+}
+
+// ── Khmer Alert ───────────────────────────────────────────────────
+.khmer-alert {
+  .alert-wrapper {
+    border-radius: 24px !important;
+    padding: 4px;
+    background: white;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15) !important;
+
+    .dark & { background: #1a1a1a; }
+  }
+
+  .alert-head {
+    padding: 22px 22px 8px;
+
+    .alert-title {
+      font-family: 'Moul', serif !important;
+      font-size: 16px !important;
+      color: #F04923 !important;
+      line-height: 1.8 !important;
+    }
+
+    .alert-sub-title {
+      font-family: 'Moul', serif !important;
+      font-size: 13px !important;
+      color: #262626 !important;
+      line-height: 1.8 !important;
+      margin-top: 4px;
+      .dark & { color: #f5f5f5 !important; }
+    }
+  }
+
+  .alert-message {
+    font-family: 'Siemreap', serif !important;
+    font-size: 13px !important;
+    line-height: 1.8 !important;
+    color: #525252 !important;
+    padding: 0 22px 18px !important;
+    white-space: pre-line;
+    .dark & { color: #a3a3a3 !important; }
+  }
+
+  .alert-button-group {
+    padding: 0 14px 14px !important;
+    gap: 8px;
+
+    .alert-btn-cancel button {
+      border-radius: 14px !important;
+      font-family: 'Siemreap', serif !important;
+      font-size: 13px !important;
+      background: #f5f5f5 !important;
+      color: #525252 !important;
+    }
+
+    .alert-btn-danger button {
+      border-radius: 14px !important;
+      font-family: 'Siemreap', serif !important;
+      font-size: 13px !important;
+      background: #F04923 !important;
+      color: white !important;
+      box-shadow: 0 4px 12px rgba(240,73,35,0.3) !important;
+    }
+  }
+}
+
+.reminder-alert .alert-wrapper {
+  border: 2px solid rgba(139, 92, 246, 0.25);
+
+  .alert-title { color: #7c3aed !important; }
+}
+
+ion-header {
+  // Ensure the header doesn't have a background that clashes with the toolbar
+  --background: transparent;
+  background: white; // Or your preferred color
+
+  ion-toolbar {
+    /* Normalizing height and padding */
+    --padding-top: 0;
+    --padding-bottom: 0;
+    --padding-start: 8px;
+    --padding-end: 8px;
+    --min-height: 56px; // Standard height to prevent jumping
+
+    /* Force background color */
+    --background: white;
+  }
+}

@@ -1,11 +1,12 @@
 <!-- holidays-list.component.html -->
 <!-- pb-24 = padding so content clears the tab bar at the bottom -->
 <div class="w-full mx-auto">
-
   <!-- ── Section Header ───────────────────────────────────── -->
   <div class="flex items-center gap-2 mb-5">
     <div class="w-1 h-6 rounded-full bg-[#F04923] dark:bg-[#FF7A52]"></div>
-    <h2 class="font-moul text-base text-neutral-800 dark:text-neutral-100 leading-loose overflow-visible">
+    <h2
+      class="font-moul text-base text-neutral-800 dark:text-neutral-100 leading-loose overflow-visible"
+    >
       ព្រឹត្តិការណ៍ប្រចាំខែ {{ monthLabel }}
     </h2>
   </div>
@@ -14,42 +15,67 @@
   <ol class="space-y-2.5">
     <li *ngFor="let holiday of filteredAttributes">
       <div
-        class="relative flex items-stretch rounded-xl overflow-hidden
-               transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
-        [ngClass]="isHoliday(holiday)
-          ? 'bg-red-50 dark:bg-red-950 ring-1 ring-red-100 dark:ring-red-900'
-          : 'bg-blue-50 dark:bg-blue-950 ring-1 ring-blue-100 dark:ring-blue-900'"
+        class="relative flex items-stretch rounded-xl overflow-hidden transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
+        [ngClass]="{
+          'bg-red-50 dark:bg-red-950 ring-1 ring-red-100 dark:ring-red-900':
+            getType(holiday) === 'holiday',
+          'bg-amber-50 dark:bg-amber-950 ring-1 ring-amber-100 dark:ring-amber-900':
+            getType(holiday) === 'traditional',
+          'bg-blue-50 dark:bg-blue-950 ring-1 ring-blue-100 dark:ring-blue-900':
+            getType(holiday) === 'general',
+        }"
       >
         <!-- Left accent stripe -->
         <div
           class="w-1 flex-shrink-0"
-          [ngClass]="isHoliday(holiday) ? 'bg-[#F04923]' : 'bg-blue-400 dark:bg-blue-500'"
+          [ngClass]="{
+            'bg-[#F04923]': getType(holiday) === 'holiday',
+            'bg-amber-500': getType(holiday) === 'traditional',
+            'bg-blue-400 dark:bg-blue-500': getType(holiday) === 'general',
+          }"
         ></div>
 
         <div class="flex-1 min-w-0 px-3 py-3">
           <!-- Date -->
           <time
             class="font-siemreap block text-[11px] font-medium mb-1 leading-loose overflow-visible"
-            [ngClass]="isHoliday(holiday)
-              ? 'text-[#F04923] dark:text-[#FF7A52]'
-              : 'text-blue-500 dark:text-blue-400'"
-          >{{ formatDate(holiday.dates) }}</time>
+            [ngClass]="{
+              'text-[#F04923] dark:text-[#FF7A52]':
+                getType(holiday) === 'holiday',
+              'text-amber-600 dark:text-amber-400':
+                getType(holiday) === 'traditional',
+              'text-blue-500 dark:text-blue-400':
+                getType(holiday) === 'general',
+            }"
+            >{{ formatDate(holiday.dates) }}</time
+          >
 
           <!-- Khmer title -->
           <h3
             class="font-moul text-sm leading-loose overflow-visible mb-0.5"
-            [ngClass]="isHoliday(holiday)
-              ? 'text-[#F04923] dark:text-[#FF7A52]'
-              : 'text-blue-700 dark:text-blue-300'"
-          >{{ getTitleKh(holiday) }}</h3>
+            [ngClass]="{
+              'text-[#F04923] dark:text-[#FF7A52]':
+                getType(holiday) === 'holiday',
+              'text-amber-700 dark:text-amber-300':
+                getType(holiday) === 'traditional',
+              'text-blue-700 dark:text-blue-300':
+                getType(holiday) === 'general',
+            }"
+          >
+            {{ getTitleKh(holiday) }}
+          </h3>
 
           <!-- English title -->
           <p
             class="font-siemreap text-xs leading-relaxed"
-            [ngClass]="isHoliday(holiday)
-              ? 'text-neutral-500 dark:text-neutral-400'
-              : 'text-neutral-500 dark:text-neutral-400'"
-          >{{ getTitleEn(holiday) }}</p>
+            [ngClass]="
+              isHoliday(holiday)
+                ? 'text-neutral-500 dark:text-neutral-400'
+                : 'text-neutral-500 dark:text-neutral-400'
+            "
+          >
+            {{ getTitleEn(holiday) }}
+          </p>
         </div>
 
         <!-- Badge -->
@@ -57,10 +83,16 @@
           <span
             class="font-siemreap text-[10px] font-medium px-2 py-0.5 rounded-full"
             style="line-height: 1.8"
-            [ngClass]="isHoliday(holiday)
-              ? 'bg-[#F04923]/10 text-[#F04923] dark:bg-[#F04923]/20 dark:text-[#FF7A52]'
-              : 'bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400'"
-          >{{ isHoliday(holiday) ? 'បុណ្យ' : 'ព្រឹត្តិការណ៍' }}</span>
+            [ngClass]="{
+              'bg-[#F04923]/10 text-[#F04923] dark:bg-[#F04923]/20 dark:text-[#FF7A52]':
+                getType(holiday) === 'holiday',
+              'bg-amber-100 dark:bg-amber-900/40 text-amber-600 dark:text-amber-400':
+                getType(holiday) === 'traditional',
+              'bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400':
+                getType(holiday) === 'general',
+            }"
+            >{{ getBadgeLabel(holiday) }}</span
+          >
         </div>
       </div>
     </li>
@@ -71,13 +103,22 @@
     *ngIf="filteredAttributes.length === 0"
     class="mt-12 flex flex-col items-center justify-center text-center"
   >
-    <div class="w-16 h-16 rounded-full bg-[#F04923]/10 flex items-center justify-center mb-3">
-      <ion-icon name="calendar-outline" class="text-2xl text-[#F04923]"></ion-icon>
+    <div
+      class="w-16 h-16 rounded-full bg-[#F04923]/10 flex items-center justify-center mb-3"
+    >
+      <ion-icon
+        name="calendar-outline"
+        class="text-2xl text-[#F04923]"
+      ></ion-icon>
     </div>
-    <p class="font-moul text-sm text-neutral-400 dark:text-neutral-500 leading-loose">
+    <p
+      class="font-moul text-sm text-neutral-400 dark:text-neutral-500 leading-loose"
+    >
       គ្មានព្រឹត្តិការណ៍ខែនេះ
     </p>
-    <p class="font-siemreap text-xs text-neutral-400 dark:text-neutral-500 mt-1">
+    <p
+      class="font-siemreap text-xs text-neutral-400 dark:text-neutral-500 mt-1"
+    >
       No events this month
     </p>
   </div>

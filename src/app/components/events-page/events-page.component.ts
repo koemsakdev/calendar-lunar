@@ -1,9 +1,12 @@
 import {
-  Component, OnInit, computed, signal, inject, HostListener
+  Component, OnInit, computed, signal, inject, HostListener,
+  ElementRef,
+  ViewChild,
+  effect
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonIcon } from '@ionic/angular/standalone';
+import { IonIcon } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { calendarOutline, searchOutline, checkmarkOutline, closeOutline, chevronDownOutline } from 'ionicons/icons';
 import moment from 'moment';
@@ -47,9 +50,10 @@ const ALL_YEARS = Array.from({ length: 51 }, (_, i) => 2000 + i);
   templateUrl: './events-page.component.html',
   styleUrls: ['./events-page.component.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, IonContent, IonIcon, FilterModalComponent]
+  imports: [CommonModule, FormsModule, IonIcon, FilterModalComponent]
 })
 export class EventsPageComponent implements OnInit {
+  @ViewChild('yearList') yearListRef!: ElementRef;
 
   // ── Inject your existing services ────────────────────────────────
   private calendarStore = inject(CalendarStoreService);
@@ -79,7 +83,7 @@ export class EventsPageComponent implements OnInit {
     {
       value: 'all',
       label: 'ទាំងអស់',
-      activeClass: 'bg-lime-800 dark:bg-lime-100 text-white dark:text-lime-900 border-lime-800',
+      activeClass: 'bg-lime-100 dark:bg-lime-100 text-lime-600 dark:text-lime-900 border-lime-800',
       dotClass: 'bg-lime-400',
     },
     {
@@ -186,9 +190,26 @@ export class EventsPageComponent implements OnInit {
 
   constructor() {
     addIcons({calendarOutline,chevronDownOutline,searchOutline,checkmarkOutline,closeOutline});
+
+    effect(() => {
+      if (this.yearModalOpen()) {
+        setTimeout(() => this.scrollToActiveYear(), 150);
+      }
+    });
   }
 
   ngOnInit(): void {}
+
+  private scrollToActiveYear(): void {
+    if (!this.yearListRef) return;
+    const container: HTMLElement = this.yearListRef.nativeElement;
+    const active = container.querySelector(
+      `[data-year="${this.selectedYear()}"]`
+    ) as HTMLElement;
+    if (active) {
+      active.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
 
   // ── Actions ───────────────────────────────────────────────────────
   selectYear(year: number): void {

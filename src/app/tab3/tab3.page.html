@@ -1,17 +1,375 @@
+<!-- tab3.page.html -->
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Tab 3
-    </ion-title>
+    <ion-title class="font-moul" style="line-height: 1.8">ការរំលឹក</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 3</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
 
-  <app-explore-container name="Tab 3 page"></app-explore-container>
+  <div class="px-4 pt-4 pb-28">
+    <!-- ── Today summary ────────────────────────────────────── -->
+    <div
+      *ngIf="todayReminders().length > 0"
+      class="mb-5 p-4 rounded-2xl bg-[#F04923]/10 border border-[#F04923]/20"
+    >
+      <div class="flex items-center gap-2 mb-2">
+        <ion-icon
+          name="notifications-outline"
+          class="text-[#F04923] text-lg"
+        ></ion-icon>
+        <span
+          class="font-moul text-sm text-[#F04923] leading-loose overflow-visible"
+        >
+          ថ្ងៃនេះ · {{ todayReminders().length }} ការរំលឹក
+        </span>
+      </div>
+      <div class="space-y-1">
+        <div
+          *ngFor="let r of todayReminders()"
+          class="flex items-center gap-2 font-siemreap text-xs text-[#F04923]/80"
+          style="line-height: 1.8"
+        >
+          <ion-icon
+            name="time-outline"
+            class="text-sm flex-shrink-0"
+          ></ion-icon>
+          <span>{{ r.time }} — {{ r.title }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Reminder list ─────────────────────────────────────── -->
+    <div class="space-y-3" *ngIf="reminders().length > 0">
+      <div
+        *ngFor="let r of reminders()"
+        class="flex items-stretch rounded-2xl overflow-hidden transition-all duration-200 hover:shadow-md"
+        [ngClass]="isPast(r)
+          ? 'bg-neutral-100 dark:bg-neutral-800 opacity-60'
+          : 'bg-white dark:bg-neutral-800 shadow-sm ring-1 ring-neutral-100 dark:ring-neutral-700'"
+      >
+        <div class="w-1 flex-shrink-0 bg-violet-500"></div>
+
+        <div class="flex-1 min-w-0 px-3 py-3">
+          <div class="flex items-start justify-between gap-2">
+            <h3
+              class="font-moul text-sm leading-loose overflow-visible"
+              [ngClass]="isPast(r) ? 'text-neutral-400' : 'text-neutral-800 dark:text-neutral-100'"
+            >
+              {{ r.title }}
+            </h3>
+            <span
+              *ngIf="r.repeat !== 'none'"
+              class="flex-shrink-0 font-siemreap text-[10px] px-2 py-0.5 rounded-full mt-1 bg-violet-100 dark:bg-violet-900/40 text-violet-600 dark:text-violet-400"
+              style="line-height: 1.8"
+              >{{ repeatLabel(r.repeat) }}</span
+            >
+          </div>
+
+          <div class="flex items-center gap-3 mt-1.5 flex-wrap">
+            <div class="flex items-center gap-1">
+              <ion-icon
+                name="calendar-outline"
+                class="text-[#F04923] text-sm"
+              ></ion-icon>
+              <span
+                class="font-siemreap text-[11px] text-neutral-500 dark:text-neutral-400"
+                style="line-height: 1.8"
+              >
+                {{ formatDateEn(r.date) }}
+              </span>
+            </div>
+            <div class="flex items-center gap-1">
+              <ion-icon
+                name="time-outline"
+                class="text-violet-500 text-sm"
+              ></ion-icon>
+              <span
+                class="font-siemreap text-[11px] text-neutral-500 dark:text-neutral-400"
+                >{{ r.time }}</span
+              >
+            </div>
+          </div>
+
+          <p
+            *ngIf="r.note"
+            class="font-siemreap text-xs text-neutral-400 mt-1.5 leading-relaxed line-clamp-2"
+          >
+            {{ r.note }}
+          </p>
+        </div>
+
+        <div class="flex flex-col justify-center gap-1 pr-2">
+          <button
+            (click)="openEdit(r)"
+            class="w-8 h-8 flex items-center justify-center rounded-lg bg-neutral-100 dark:bg-neutral-700 text-neutral-500 hover:bg-[#F04923]/10 hover:text-[#F04923] transition-colors"
+          >
+            <ion-icon name="create-outline" class="text-base"></ion-icon>
+          </button>
+          <button
+            (click)="deleteReminder(r)"
+            class="w-8 h-8 flex items-center justify-center rounded-lg bg-neutral-100 dark:bg-neutral-700 text-neutral-500 hover:bg-red-50 hover:text-red-500 transition-colors"
+          >
+            <ion-icon name="trash-outline" class="text-base"></ion-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Empty state ───────────────────────────────────────── -->
+    <div
+      *ngIf="reminders().length === 0"
+      class="mt-20 flex flex-col items-center justify-center text-center"
+    >
+      <div
+        class="w-20 h-20 rounded-full bg-violet-50 dark:bg-violet-900/20 flex items-center justify-center mb-4"
+      >
+        <ion-icon
+          name="alarm-outline"
+          class="text-4xl text-violet-400"
+        ></ion-icon>
+      </div>
+      <p
+        class="font-moul text-sm text-neutral-400 dark:text-neutral-500 leading-loose"
+      >
+        មិនទាន់មានការរំលឹក
+      </p>
+      <p class="font-siemreap text-xs text-neutral-400 mt-1 mb-5">
+        No reminders yet
+      </p>
+      <button
+        (click)="openCreate()"
+        class="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#F04923] text-white font-siemreap text-sm active:scale-95 transition-all shadow-sm shadow-[#F04923]/30"
+        style="line-height: 1.8"
+      >
+        <ion-icon name="add-outline" class="text-lg"></ion-icon>
+        បង្កើតការរំលឹក
+      </button>
+    </div>
+  </div>
+
+  <!-- FAB -->
+  <div *ngIf="reminders().length > 0" class="fixed bottom-24 right-5 z-50">
+    <button
+      (click)="openCreate()"
+      class="w-14 h-14 rounded-full bg-[#F04923] text-white shadow-lg shadow-[#F04923]/40 flex items-center justify-center active:scale-95 transition-all duration-150"
+    >
+      <ion-icon name="add-outline" class="text-2xl"></ion-icon>
+    </button>
+  </div>
 </ion-content>
+
+<!-- ════════════════════════════════════════════════════════════
+     CREATE / EDIT MODAL
+════════════════════════════════════════════════════════════ -->
+<app-filter-modal
+  [isOpen]="formModalOpen()"
+  [title]="isEditing() ? 'កែប្រែការរំលឹក' : 'បង្កើតការរំលឹក'"
+  (closed)="closeForm()"
+>
+  <div class="space-y-4 pb-6">
+    <!-- Title -->
+    <div>
+      <label
+        class="font-siemreap text-xs text-neutral-500 dark:text-neutral-400 block mb-1.5"
+        style="line-height: 1.8"
+      >
+        ចំណងជើង <span class="text-red-400">*</span>
+      </label>
+      <input
+        type="text"
+        placeholder="ឧ. ចូលជួបគ្រូពេទ្យ / Doctor appointment"
+        class="w-full px-4 py-3 rounded-2xl font-siemreap text-sm border-2 border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-800 dark:text-neutral-100 placeholder:text-neutral-400 focus:outline-none focus:border-[#F04923] transition-all duration-200"
+        style="line-height: 1.8"
+        [ngModel]="form().title"
+        (ngModelChange)="updateForm('title', $event)"
+      />
+    </div>
+
+    <!-- ── Date & Time side by side triggers ────────────────── -->
+    <div class="grid grid-cols-2 gap-3">
+      <!-- Date button -->
+      <div>
+        <label
+          class="font-siemreap text-xs text-neutral-500 dark:text-neutral-400 block mb-1.5"
+          style="line-height: 1.8"
+        >
+          កាលបរិច្ឆេទ <span class="text-red-400">*</span>
+        </label>
+        <button
+          id="date-trigger"
+          class="w-full flex flex-col items-center justify-center gap-1 py-4 rounded-2xl border-2 transition-all duration-200 active:scale-[0.97]"
+          [ngClass]="form().date
+            ? 'border-[#F04923] bg-[#F04923]/5 dark:bg-[#F04923]/10'
+            : 'border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800'"
+        >
+          <div
+            class="w-10 h-10 rounded-xl flex items-center justify-center mb-0.5"
+            [ngClass]="form().date ? 'bg-[#F04923] text-white' : 'bg-neutral-100 dark:bg-neutral-700 text-neutral-400'"
+          >
+            <ion-icon name="calendar-outline" class="text-xl"></ion-icon>
+          </div>
+          <span
+            class="font-siemreap text-xs font-semibold"
+            [ngClass]="form().date ? 'text-[#F04923]' : 'text-neutral-400'"
+            style="line-height: 1.6"
+            >{{ form().date ? formatDateShort(form().date) : 'ជ្រើសថ្ងៃ'
+            }}</span
+          >
+          <span
+            *ngIf="form().date"
+            class="font-siemreap text-[10px] text-neutral-400"
+            >{{ formatDayName(form().date) }}</span
+          >
+        </button>
+
+        <ion-modal
+          trigger="date-trigger"
+          [initialBreakpoint]="0.6"
+          [breakpoints]="[0, 0.6]"
+          cssClass="picker-modal"
+          (ionModalDidPresent)="onDateModalOpen()"
+        >
+          <ng-template>
+            <div
+              class="flex flex-col items-center py-4 px-2 bg-white dark:bg-neutral-900 rounded-t-3xl"
+            >
+              <p
+                class="font-moul text-sm text-neutral-600 dark:text-neutral-300 mb-3 leading-loose overflow-visible"
+              >
+                ជ្រើសរើសកាលបរិច្ឆេទ
+              </p>
+              <ion-datetime
+                #datePicker
+                presentation="date"
+                (ionChange)="onDateChange($event)"
+                [showDefaultButtons]="true"
+                doneText="យល់ព្រម"
+                cancelText="បោះបង់"
+                class="rounded-2xl w-full custom-datetime font-siemreap"
+                locale="en-US"
+                size="cover"
+              ></ion-datetime>
+            </div>
+          </ng-template>
+        </ion-modal>
+      </div>
+
+      <!-- Time button -->
+      <div>
+        <label
+          class="font-siemreap text-xs text-neutral-500 dark:text-neutral-400 block mb-1.5"
+          style="line-height: 1.8"
+        >
+          ម៉ោង <span class="text-red-400">*</span>
+        </label>
+        <button
+          id="time-trigger"
+          class="w-full flex flex-col items-center justify-center gap-1 py-4 rounded-2xl border-2 transition-all duration-200 active:scale-[0.97]"
+          [ngClass]="form().time
+            ? 'border-violet-400 bg-violet-50 dark:bg-violet-900/20'
+            : 'border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800'"
+        >
+          <div
+            class="w-10 h-10 rounded-xl flex items-center justify-center mb-0.5"
+            [ngClass]="form().time ? 'bg-violet-500 text-white' : 'bg-neutral-100 dark:bg-neutral-700 text-neutral-400'"
+          >
+            <ion-icon name="time-outline" class="text-xl"></ion-icon>
+          </div>
+          <span
+            class="font-siemreap text-xs font-semibold"
+            [ngClass]="form().time ? 'text-violet-500' : 'text-neutral-400'"
+            style="line-height: 1.6"
+            >{{ form().time ? formatTime12h(form().time) : 'ជ្រើសម៉ោង' }}</span
+          >
+          <span
+            *ngIf="form().time"
+            class="font-siemreap text-[10px] text-neutral-400"
+            >{{ getAmPm(form().time) }}</span
+          >
+        </button>
+
+        <ion-modal
+          trigger="time-trigger"
+          [initialBreakpoint]="0.5"
+          [breakpoints]="[0, 0.5]"
+          cssClass="picker-modal"
+          (ionModalDidPresent)="onTimeModalOpen()"
+        >
+          <ng-template>
+            <ion-datetime
+              #timePicker
+              presentation="time"
+              (ionChange)="onTimeChange($event)"
+              [showDefaultButtons]="true"
+              doneText="យល់ព្រម"
+              cancelText="បោះបង់"
+              class="rounded-2xl w-full custom-datetime"
+              hourCycle="h12"
+              size="cover"
+            ></ion-datetime>
+          </ng-template>
+        </ion-modal>
+      </div>
+    </div>
+
+    <!-- Repeat -->
+    <div>
+      <label
+        class="font-siemreap text-xs text-neutral-500 dark:text-neutral-400 block mb-2"
+        style="line-height: 1.8"
+      >
+        ការដដែលៗ
+      </label>
+      <div class="grid grid-cols-2 gap-2">
+        <button
+          *ngFor="let opt of repeatOptions"
+          (click)="updateForm('repeat', opt)"
+          class="flex items-center gap-2 px-3 py-2.5 rounded-xl border-2 transition-all duration-150 active:scale-95"
+          style="line-height: 1.8"
+          [ngClass]="form().repeat === opt
+            ? 'bg-violet-500 text-white border-violet-500 shadow-sm shadow-violet-500/30'
+            : 'bg-white dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 border-neutral-200 dark:border-neutral-700'"
+        >
+          <ion-icon
+            [name]="repeatIcon(opt)"
+            class="text-base flex-shrink-0"
+          ></ion-icon>
+          <span class="font-siemreap text-xs">{{ repeatLabels[opt].kh }}</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Note -->
+    <div>
+      <label
+        class="font-siemreap text-xs text-neutral-500 dark:text-neutral-400 block mb-1.5"
+        style="line-height: 1.8"
+      >
+        កំណត់សម្គាល់
+      </label>
+      <textarea
+        rows="3"
+        placeholder="បន្ថែមព័ត៌មានលម្អិត..."
+        class="w-full px-4 py-3 rounded-2xl font-siemreap text-sm border-2 border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-800 dark:text-neutral-100 placeholder:text-neutral-400 focus:outline-none focus:border-[#F04923] transition-all duration-200 resize-none"
+        style="line-height: 1.8"
+        [ngModel]="form().note"
+        (ngModelChange)="updateForm('note', $event)"
+      ></textarea>
+    </div>
+
+    <!-- Save -->
+    <button
+      (click)="saveReminder()"
+      [disabled]="!canSave()"
+      class="w-full py-4 rounded-2xl font-siemreap text-sm font-semibold transition-all duration-150 active:scale-[0.98]"
+      style="line-height: 1.8"
+      [ngClass]="canSave()
+        ? 'bg-[#F04923] text-white shadow-lg shadow-[#F04923]/30'
+        : 'bg-neutral-200 dark:bg-neutral-700 text-neutral-400 cursor-not-allowed'"
+    >
+      <span *ngIf="!isEditing()">រក្សាទុកការរំលឹក</span>
+      <span *ngIf="isEditing()">រក្សាទុកការផ្លាស់ប្តូរ</span>
+    </button>
+  </div>
+</app-filter-modal>

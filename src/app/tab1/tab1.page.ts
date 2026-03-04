@@ -1,25 +1,37 @@
+// tab1.page.ts
 import { Component, inject, signal } from '@angular/core';
 import {
   IonHeader,
   IonToolbar,
   IonTitle,
   IonContent,
-  IonIcon
+  IonIcon,
 } from '@ionic/angular/standalone';
 import * as moment from 'moment';
 import { CommonModule } from '@angular/common';
 import { CalendarComponent } from '../components/calendar/calendar.component';
 import { HolidaysListComponent } from '../components/holidays-list/holidays-list.component';
-import { CalendarStoreService, CalendarAttribute, CalendarDay } from '../services/calendar-store.service';
+import {
+  CalendarStoreService,
+  CalendarAttribute,
+} from '../services/calendar-store.service';
 import { KhmerDateService } from '../services/khmer-date.service';
 import { addIcons } from 'ionicons';
-import { closeOutline, flagOutline, calendarOutline } from 'ionicons/icons';
+import {
+  closeOutline,
+  flagOutline,
+  calendarOutline,
+  moonOutline,
+} from 'ionicons/icons';
 import { FilterModalComponent } from '../shared/filter-modal/filter-modal.component';
 
 export interface DayDetail {
   date: moment.Moment;
   attributes: CalendarAttribute[];
 }
+
+// ── Attribute type helper ─────────────────────────────────────────
+type AttrType = 'holiday' | 'traditional' | 'general';
 
 @Component({
   selector: 'app-tab1',
@@ -45,16 +57,20 @@ export class Tab1Page {
   detail = signal<DayDetail | null>(null);
 
   constructor() {
-    addIcons({ closeOutline, flagOutline, calendarOutline });
+    addIcons({ closeOutline, flagOutline, calendarOutline, moonOutline });
   }
 
+  // ── Day click ─────────────────────────────────────────────────────
   onDayClick(date: moment.Moment): void {
-    this.detail.set({
-      date,
-      attributes: this.calendarStore.attributes().filter((item) =>
-        date.isSame(item.dates, 'day')
-      ),
+    // Filter out internal keys (Buddhist Holy Day watermark, 'today')
+    const attrs = this.calendarStore.attributes().filter((item) => {
+      if (!date.isSame(item.dates, 'day')) return false;
+      const title = item.customData?.title as any;
+      if (title?.en === 'today') return false;
+      return true;
     });
+
+    this.detail.set({ date, attributes: attrs });
     this.openModal.set(true);
   }
 
@@ -62,15 +78,39 @@ export class Tab1Page {
     this.openModal.set(false);
   }
 
-  getDateKhmerLunar(date: moment.Moment): string {
-    return this.khmerDateService.toLunarDate(date);
+  // ── Attribute type ────────────────────────────────────────────────
+  getAttrType(attr: CalendarAttribute): AttrType {
+    if (attr.customData.description === 'Holiday in Cambodia') return 'holiday';
+    if (
+      attr.customData.description === 'Buddhist Holy Day' ||
+      attr.key.startsWith('traditional_events') ||
+      attr.key.startsWith('traditional_holidays')
+    )
+      return 'traditional';
+    return 'general';
   }
 
-  getAttributeKhTitle(attr: CalendarAttribute): string {
-    const title = attr.customData.title as { kh: string; en: string };
-    return title?.kh ?? '';
+  getAttrBadgeLabel(attr: CalendarAttribute): string {
+    const type = this.getAttrType(attr);
+    if (type === 'holiday') return 'បុណ្យជាតិ';
+    if (type === 'traditional') return 'ប្រពៃណី';
+    return 'ទូទៅ';
   }
 
+  // ── Keep isHoliday for template backward compat ───────────────────
+  isHoliday(attr: CalendarAttribute): boolean {
+    return this.getAttrType(attr) === 'holiday';
+  }
+
+  isModalBuddhistHolyDay(): boolean {
+    return (
+      this.modalDetail?.attributes?.some(
+        (attr) => attr.customData?.description === 'Buddhist Holy Day',
+      ) ?? false
+    );
+  }
+
+  // ── Title helpers ─────────────────────────────────────────────────
   getTitleKh(attr: CalendarAttribute): string {
     const title = attr.customData.title as { kh: string; en: string };
     return title?.kh ?? '';
@@ -81,30 +121,23 @@ export class Tab1Page {
     return title?.en ?? '';
   }
 
-  isHoliday(attr: CalendarAttribute): boolean {
-    return attr.customData.description === 'Holiday in Cambodia';
-  }
-
-  isModalBuddhistHolyDay(): boolean {
-    if (!this.modalDetail?.attributes?.length) return false;
-
-    return this.modalDetail.attributes.some(
-      attr => attr.customData?.description === 'Buddhist Holy Day'
-    );
+  // ── Date formatters ───────────────────────────────────────────────
+  getDateKhmerLunar(date: moment.Moment): string {
+    return this.khmerDateService.toLunarDate(date);
   }
 
   formatKhDate(date: moment.Moment): string {
-    return date.clone().format('LL');
+    return date.clone().locale('km').format('LL');
   }
 
   formatEnDate(date: moment.Moment): string {
     return date.clone().locale('en').format('LL');
   }
 
+  // ── Getters ───────────────────────────────────────────────────────
   get modalDetail(): DayDetail | null {
     return this.detail();
   }
-
   get isModalOpen(): boolean {
     return this.openModal();
   }

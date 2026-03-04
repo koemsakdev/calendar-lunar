@@ -18,23 +18,6 @@
   }
 }
 
-// .calendar-section {
-//   width: 100%;
-
-//   @media (min-width: 1024px) {
-//     width: 66.666%;
-//     flex-shrink: 0;
-//   }
-// }
-
-// .sidebar-section {
-//   width: 100%;
-
-//   @media (min-width: 1024px) {
-//     flex: 1;
-//   }
-// }
-
 // Modal
 .modal-date-header {
   margin-bottom: 16px;
@@ -83,5 +66,28 @@
   p {
     font-size: 14px;
     margin: 0;
+  }
+}
+
+ion-header {
+  // Ensure the header doesn't have a background that clashes with the toolbar
+  --background: transparent;
+  background: white; // Or your preferred color
+
+  ion-toolbar {
+    /* Normalizing height and padding */
+    --padding-top: 0;
+    --padding-bottom: 0;
+    --padding-start: 8px;
+    --padding-end: 8px;
+    --min-height: 56px; // Standard height to prevent jumping
+
+    /* Force background color */
+    --background: white;
+  }
+
+  ion-title {
+    font-family: 'Moul', serif !important;
+    line-height: 1.8 !important;
   }
 }

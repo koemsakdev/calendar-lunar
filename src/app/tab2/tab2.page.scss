@@ -1,0 +1,17 @@
+ion-header {
+  // Ensure the header doesn't have a background that clashes with the toolbar
+  --background: transparent;
+  background: white; // Or your preferred color
+
+  ion-toolbar {
+    /* Normalizing height and padding */
+    --padding-top: 0;
+    --padding-bottom: 0;
+    --padding-start: 8px;
+    --padding-end: 8px;
+    --min-height: 56px; // Standard height to prevent jumping
+
+    /* Force background color */
+    --background: white;
+  }
+}
