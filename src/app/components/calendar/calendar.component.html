@@ -1,65 +1,66 @@
 <!-- calendar.component.html -->
-
 <div class="calendar-wrapper">
-  <div class="mb-4 flex items-center gap-2">
-    <img
+
+  <!-- ── Header ──────────────────────────────────────────────── -->
+  <div class="mb-5 flex items-center gap-3">
+    <!-- <img
       src="assets/calendar-khmer-logo.png"
-      alt=""
-      class="w-14 object-contain"
-    />
-    <div class="flex flex-col gap-2 mt-2">
-      <h1 class="text-base font-bold tracking-tight">
+      alt="Khmer Calendar"
+      class="w-14 h-14 object-contain drop-shadow-md flex-shrink-0"
+    /> -->
+    <div class="flex flex-col gap-1">
+      <h1 class="font-moul text-lg text-[#F04923] dark:text-[#FF7A52] leading-loose overflow-visible">
         {{ currentKhmerMonths.join(" - ") }} {{ initKhDate }}
       </h1>
-      <span class="text-lg text-gray-800">
+      <span class="font-siemreap text-md text-neutral-500 dark:text-neutral-400 leading-loose overflow-visible">
         {{ initDateFormatted }}
       </span>
     </div>
   </div>
-  <div
-    class="flex items-center justify-between border-t border-neutral-300 dark:border-neutral-700 py-4"
-  >
+
+  <!-- ── Navigation Bar ─────────────────────────────────────── -->
+  <div class="flex items-center justify-between border-t border-neutral-200 dark:border-neutral-700 pt-4 pb-3 mb-4">
+
     <div class="flex items-center gap-2">
-      <!-- Month -->
       <button
-        class="flex items-center gap-2 px-4 py-1 bg-neutral-100 dark:bg-neutral-800 rounded-md text-sm font-medium hover:bg-neutral-200 transition"
+        class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium
+               bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300
+               hover:bg-neutral-200 dark:hover:bg-neutral-700
+               active:scale-95 transition-all duration-150 font-siemreap"
+        style="line-height: 1.8"
         (click)="toggleMonthModal()"
       >
         <span>{{ currentMonthLabel }}</span>
-
-        <ion-icon
-          [name]="
-            monthModalOpen() ? 'chevron-up-outline' : 'chevron-down-outline'
-          "
-          class="text-sm transition-transform duration-200"
-        ></ion-icon>
+        <ion-icon [name]="monthModalOpen() ? 'chevron-up-outline' : 'chevron-down-outline'" class="text-xs"></ion-icon>
       </button>
 
-      <!-- Year -->
       <button
-        class="flex items-center gap-2 px-4 py-1 bg-neutral-100 dark:bg-neutral-800 rounded-md text-sm font-medium hover:bg-neutral-200 transition"
+        class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium
+               bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300
+               hover:bg-neutral-200 dark:hover:bg-neutral-700
+               active:scale-95 transition-all duration-150 font-siemreap"
+        style="line-height: 1.8"
         (click)="toggleYearModal()"
       >
         <span>{{ currentYearValue }}</span>
-
-        <ion-icon
-          [name]="
-            yearModalOpen() ? 'chevron-up-outline' : 'chevron-down-outline'
-          "
-          class="text-sm transition-transform duration-200"
-        ></ion-icon>
+        <ion-icon [name]="yearModalOpen() ? 'chevron-up-outline' : 'chevron-down-outline'" class="text-xs"></ion-icon>
       </button>
     </div>
-    <div class="flex items-center gap-1 text-sm">
+
+    <div class="flex items-center gap-1">
       <ion-button fill="clear" size="small" (click)="onPrev()">
         <ion-icon name="chevron-back-outline"></ion-icon>
       </ion-button>
 
       <button
         (click)="reset()"
-        class="px-3 py-1 bg-neutral-100 dark:bg-neutral-800 rounded-md text-sm font-medium hover:bg-neutral-200 transition"
+        class="font-siemreap px-3 py-1.5 rounded-lg text-sm font-medium
+               bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300
+               hover:bg-neutral-200 dark:hover:bg-neutral-700
+               active:scale-95 transition-all duration-150"
+        style="line-height: 1.8"
       >
-        ថ្ងៃនេះ
+        បច្ចុប្បន្ន
       </button>
 
       <ion-button fill="clear" size="small" (click)="onNext()">
@@ -68,139 +69,133 @@
     </div>
   </div>
 
-  <app-filter-modal
-    [isOpen]="monthModalOpen()"
-    title="Select Month"
-    (closed)="monthModalOpen.set(false)"
-  >
-    <div class="grid grid-cols-3 md:grid-cols-4 gap-3">
+  <!-- ── Month Picker Modal ──────────────────────────────────── -->
+  <app-filter-modal [isOpen]="monthModalOpen()" title="Select Month" (closed)="monthModalOpen.set(false)">
+    <div class="grid grid-cols-3 md:grid-cols-4 gap-2 p-1">
       <div
         *ngFor="let m of monthOptions"
         (click)="selectMonth(m.value); monthModalOpen.set(false)"
-        class="py-2 text-center rounded-md border cursor-pointer"
-        [ngClass]="{
-          'bg-blue-500 text-white dark:bg-blue-400 dark:text-black':
-            m.value === currentMonthValue,
-          'hover:bg-blue-500/10': m.value !== currentMonthValue,
-        }"
-      >
-        {{ m.label }}
-      </div>
+        class="py-2.5 text-center rounded-xl border cursor-pointer select-none
+               transition-all duration-150 font-siemreap text-sm"
+        style="line-height: 1.8"
+        [ngClass]="m.value === currentMonthValue
+          ? 'bg-[#F04923] text-white border-[#F04923]'
+          : 'border-neutral-200 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300 hover:bg-[#F04923]/10 hover:text-[#F04923]'"
+      >{{ m.label }}</div>
     </div>
   </app-filter-modal>
 
-  <app-filter-modal
-    [isOpen]="yearModalOpen()"
-    title="Select Year"
-    (closed)="yearModalOpen.set(false)"
-  >
-    <div class="sticky top-0 bg-white dark:bg-neutral-900 pb-4 z-10">
-      <input
-        type="text"
-        placeholder="Search year..."
-        class="w-full px-4 py-3 rounded-full border border-neutral-100 dark:border-neutral-700 text-sm focus:outline-none focus:ring-1 bg-slate-50 dark:bg-slate-800 transition"
-        [ngModel]="yearSearchQuery()"
-        (ngModelChange)="yearSearchQuery.set($event)"
-      />
+  <!-- ── Year Picker Modal ───────────────────────────────────── -->
+  <app-filter-modal [isOpen]="yearModalOpen()" title="Select Year" (closed)="yearModalOpen.set(false)">
+    <div class="sticky top-0 bg-white dark:bg-neutral-900 pb-3 z-10">
+      <div class="relative">
+        <ion-icon name="search-outline"
+          class="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400 text-base pointer-events-none">
+        </ion-icon>
+        <input
+          type="text"
+          placeholder="ស្វែងរកឆ្នាំ..."
+          class="w-full pl-9 pr-4 py-2.5 rounded-xl font-siemreap
+                 border border-neutral-200 dark:border-neutral-700
+                 bg-neutral-50 dark:bg-neutral-800
+                 text-sm text-neutral-700 dark:text-neutral-200
+                 placeholder:text-neutral-400 focus:outline-none transition"
+          style="line-height: 1.8"
+          [ngModel]="yearSearchQuery()"
+          (ngModelChange)="yearSearchQuery.set($event)"
+        />
+      </div>
     </div>
 
-    <div #yearList class="space-y-2 max-h-[65vh] overflow-y-auto scroll-smooth">
+    <div #yearList class="space-y-1 max-h-[48vh] overflow-y-auto scroll-smooth pr-1">
       <div
-        *ngFor="let y of filteredYears(); let i = index"
+        *ngFor="let y of filteredYears()"
         [attr.data-year]="y.value"
         (click)="selectYear(y.value); yearModalOpen.set(false)"
-        class="flex items-center justify-between px-2 py-2 rounded-sm cursor-pointer transition-all duration-150 hover:bg-primary/10 border-b border-neutral-300 dark:border-neutral-600"
-        [ngClass]="{
-          'bg-primary/15 text-primary': y.value === currentYearValue,
-        }"
+        class="flex items-center justify-between px-3 py-2.5 rounded-lg
+               cursor-pointer select-none font-siemreap text-base
+               border-b border-neutral-100 dark:border-neutral-800
+               transition-all duration-150"
+        style="line-height: 1.8"
+        [ngClass]="y.value === currentYearValue
+          ? 'bg-[#F04923]/10 text-[#F04923] dark:text-[#FF7A52] font-semibold'
+          : 'text-neutral-700 dark:text-neutral-300 hover:bg-[#F04923]/10 hover:text-[#F04923]'"
       >
-        <span class="text-base">{{ y.label }}</span>
-
-        <ion-icon
-          *ngIf="y.value === currentYearValue"
-          name="checkmark-outline"
-          class="text-primary text-lg"
-        ></ion-icon>
+        <span>{{ y.label }}</span>
+        <ion-icon *ngIf="y.value === currentYearValue" name="checkmark-outline" class="text-[#F04923] text-lg"></ion-icon>
       </div>
     </div>
   </app-filter-modal>
 
-  <!-- Calendar Card -->
-  <div class="calendar-card">
+  <!-- ── Calendar Grid ───────────────────────────────────────── -->
+  <div>
     <!-- Week Header -->
-    <div
-      class="grid grid-cols-7 gap-1 border border-stone-100 rounded-md overflow-hidden mb-2 font-bold text-[12px] md:text-[14px]"
-    >
+    <div class="grid grid-cols-7 gap-1 overflow-hidden mb-2 font-bold text-[12px] md:text-[14px]">
       <div
         *ngFor="let week of daysOfWeek; let i = index"
-        class="text-center py-2 px-1 truncate"
-        [class.text-red-600]="i === 0 || i === 6"
+        class="text-center py-3 px-1 truncate font-[11px] md:font-[13px] rounded-md
+               transition-colors duration-150"
+        [ngClass]="(i === 0 || i === 6)
+          ? 'text-[#F04923] dark:text-[#FF7A52] bg-[#F04923]/5'
+          : 'text-neutral-500 dark:text-neutral-400 bg-neutral-50 dark:bg-neutral-800'"
       >
         {{ week.km.format("dddd") }}
       </div>
     </div>
 
     <!-- Days Grid -->
-    <div class="grid grid-cols-7 gap-2 sm:gap-3 p-0 bg-slate-50/5 rounded-2xl">
+    <div class="grid grid-cols-7 gap-2 sm:gap-2">
       <div
         *ngFor="let day of days"
         (click)="onDayClick(day.date)"
-        class="relative group p-2 rounded-md sm:rounded-lg transition-all duration-300 cursor-pointer hover:bg-white hover:shadow-xl hover:shadow-slate-200/50 hover:-translate-y-1"
+        class="relative group p-1.5 sm:p-2 rounded-md cursor-pointer select-none
+               transition-all duration-200 min-h-[52px] sm:min-h-[60px]"
         [ngClass]="{
-          'opacity-30 grayscale-[0.5] bg-stone-100 hover:bg-stone-100':
+          'opacity-30 pointer-events-none bg-neutral-100 dark:bg-neutral-900':
             day.prevMonth || day.nextMonth,
-          'bg-white shadow-sm ring-1 ring-stone-100':
-            !day.prevMonth && !day.nextMonth,
-          'bg-blue-200 hover:bg-blue-300': isToday(day.date),
-          '!bg-rose-100 !hover:bg-rose-100':
-            isSaturday(day.date) ||
-            isSunday(day.date) ||
-            getHolidayClass(day) === 'holiday-cambodia',
-          'bg-indigo-50/50': getHolidayClass(day) === 'general-event',
+          'bg-[#F04923] text-white shadow-md hover:shadow-lg hover:-translate-y-0.5':
+            isToday(day.date),
+          'bg-red-50 dark:bg-red-950 ring-1 ring-red-100 dark:ring-red-900 hover:bg-red-100 hover:-translate-y-0.5':
+            !isToday(day.date) && (isSaturday(day.date) || isSunday(day.date) || getHolidayClass(day) === 'holiday-cambodia'),
+          'bg-lime-50 dark:bg-lime-900 ring-1 ring-lime-200 dark:ring-lime-800 hover:bg-lime-100 hover:-translate-y-0.5':
+            !isToday(day.date) && getHolidayClass(day) === 'general-event',
+          'bg-white dark:bg-neutral-800 ring-1 ring-neutral-100 dark:ring-neutral-700 hover:shadow-md hover:-translate-y-0.5':
+            !day.prevMonth && !day.nextMonth && !isToday(day.date) &&
+            !isSaturday(day.date) && !isSunday(day.date) &&
+            getHolidayClass(day) !== 'holiday-cambodia' &&
+            getHolidayClass(day) !== 'general-event'
         }"
       >
+        <!-- Buddhist watermark -->
         <div
           *ngIf="isBuddhistHolyDay(day)"
-          class="absolute inset-0 flex items-center justify-center opacity-[0.2] group-hover:opacity-[0.3] transition-opacity"
+          class="absolute inset-0 flex items-center justify-center
+                 opacity-10 group-hover:opacity-20 transition-opacity pointer-events-none"
         >
-          <img
-            src="assets/buddhist-icon.webp"
-            alt=""
-            class="w-4/5 h-4/5 object-contain"
-          />
+          <img src="assets/buddhist-icon.webp" alt="" class="w-4/5 h-4/5 object-contain" />
         </div>
 
         <div class="relative z-10 h-full flex flex-col justify-between">
-          <div
-            class="flex justify-center sm:justify-between items-center sm:items-start"
-          >
+          <div class="flex justify-center sm:justify-between items-center">
             <span
-              class="text-lg sm:text-2xl font-black tracking-tight"
-              [class.text-blue-600]="isToday(day.date)"
-              [class.text-rose-600]="
-                isSaturday(day.date) ||
-                isSunday(day.date) ||
-                getHolidayClass(day) === 'holiday-cambodia'
-              "
-            >
-              {{ day.day }}
-            </span>
+              class="text-lg sm:text-xl font-black tracking-tight"
+              [ngClass]="{
+                'text-white': isToday(day.date),
+                'text-[#F04923] dark:text-[#FF7A52]': !isToday(day.date) && (isSaturday(day.date) || isSunday(day.date) || getHolidayClass(day) === 'holiday-cambodia'),
+                'text-neutral-800 dark:text-neutral-100': !isToday(day.date) && !isSaturday(day.date) && !isSunday(day.date) && getHolidayClass(day) !== 'holiday-cambodia'
+              }"
+            >{{ day.day }}</span>
 
             <div *ngIf="isBuddhistHolyDay(day)" class="hidden lg:block">
-              <img
-                src="assets/buddhist-icon.webp"
-                class="w-5 h-5 drop-shadow-sm"
-                alt="Holy Day"
-              />
+              <img src="assets/buddhist-icon.webp" class="w-4 h-4 drop-shadow-sm" alt="Holy Day" />
             </div>
           </div>
 
           <div class="flex flex-col items-center sm:items-end">
             <span
-              class="text-[10px] sm:text-xs font-medium text-slate-500 leading-tight"
-            >
-              {{ getKhDN(day) }}
-            </span>
+              class="font-siemreap text-[9px] sm:text-[11px] leading-loose overflow-visible"
+              [ngClass]="isToday(day.date) ? 'text-white/75' : 'text-neutral-400 dark:text-neutral-500'"
+            >{{ getKhDN(day) }}</span>
           </div>
         </div>
       </div>

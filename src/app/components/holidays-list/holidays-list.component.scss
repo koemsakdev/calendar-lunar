@@ -1,89 +1,57 @@
 // holidays-list.component.scss
 
-.holidays-container {
-  background: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 12px;
-  // margin-top: 16px;
-  font-family: 'Hanuman', 'Nokora', sans-serif;
+// ── Event Card ───────────────────────────────────────────────────
+.event-card {
+  @apply relative flex items-start rounded-xl overflow-hidden
+         transition-all duration-200;
+
+  &:hover {
+    @apply -translate-y-0.5 shadow-md;
+  }
+
+  &--holiday {
+    @apply bg-red-50 dark:bg-red-950
+           ring-1 ring-red-100 dark:ring-red-900;
+  }
+
+  &--general {
+    @apply bg-blue-50 dark:bg-blue-950
+           ring-1 ring-blue-100 dark:ring-blue-900;
+  }
+
+  padding: 12px 12px 12px 0;
 }
 
-.holidays-title {
-  font-size: 18px;
-  font-weight: bold;
-  color: #2563eb;
-  margin: 0 0 12px;
-  font-family: 'Hanuman', sans-serif;
-}
+// ── Left Accent Stripe ───────────────────────────────────────────
+.event-stripe {
+  @apply w-1 self-stretch flex-shrink-0;
 
-.timeline-list {
-  position: relative;
-  list-style: none;
-  padding: 0 0 0 16px;
-  margin: 0;
-
-  &::before {
-    content: '';
-    position: absolute;
-    left: 5px;
-    top: 0;
-    bottom: 0;
-    width: 1px;
-    background: #e5e7eb;
+  &--holiday {
+    background: #f04923;
+  }
+  &--general {
+    @apply bg-blue-400 dark:bg-blue-500;
   }
 }
 
-.timeline-item {
-  position: relative;
-  margin-top: 16px;
-  cursor: pointer;
-  font-family: 'Nokora', sans-serif;
+// ── Badge ────────────────────────────────────────────────────────
+.event-badge {
+  @apply flex-shrink-0 self-start text-xs font-medium
+         px-2 py-0.5 rounded-full;
+  line-height: 1.8;
 
-  &.holiday {
-    color: #ef4444;
+  &--holiday {
+    background: rgba(240, 73, 35, 0.1);
+    color: #f04923;
+
+    .dark & {
+      background: rgba(240, 73, 35, 0.2);
+      color: #ff7a52;
+    }
   }
 
-  &.general {
-    color: #3b82f6;
+  &--general {
+    @apply bg-blue-100 dark:bg-blue-900
+           text-blue-600 dark:text-blue-400;
   }
-}
-
-.timeline-dot {
-  position: absolute;
-  left: -20px;
-  top: 4px;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: #e5e7eb;
-  border: 1px solid #fff;
-}
-
-.timeline-date {
-  display: block;
-  font-size: 12px;
-  opacity: 0.7;
-  line-height: 1.4;
-  margin-bottom: 2px;
-}
-
-.timeline-title-kh {
-  font-size: 16px;
-  font-weight: bold;
-  margin: 2px 0;
-  font-family: 'Moul', 'Nokora', sans-serif;
-}
-
-.timeline-title-en {
-  font-size: 13px;
-  opacity: 0.7;
-  margin: 0;
-}
-
-.empty-state {
-  text-align: center;
-  color: #9ca3af;
-  font-size: 14px;
-  padding: 20px 0;
 }

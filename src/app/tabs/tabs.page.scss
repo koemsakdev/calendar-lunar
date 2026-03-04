@@ -1,1 +1,28 @@
+ion-tabs {
+  font-family: "Siemreap", "Sora", sans-serif;
+}
+ion-tab-bar {
+  --background: #ffffff;
+  --border: none;
+  --color: theme('colors.gray.400');
+  --color-selected: #E53E3E;
+}
 
+ion-tab-button {
+  --background: transparent;
+  --ripple-color: transparent;
+  position: relative;
+  transition: color 0.2s ease;
+
+  ion-label {
+    font-family: "Moul", "Siemreap", sans-serif;
+    @apply text-xs font-medium;
+    line-height: 1.6;        // ← key fix: prevents glyph clipping
+    padding-top: 2px;        // ← small nudge for top vowels
+    display: block;
+  }
+
+  &.tab-selected::before {
+    transform: translateX(-50%) scaleX(1);
+  }
+}

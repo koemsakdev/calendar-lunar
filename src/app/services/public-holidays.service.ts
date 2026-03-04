@@ -1,3 +1,4 @@
+// public-holidays.service.ts
 import { Injectable } from '@angular/core';
 
 export interface EventSummary {
@@ -132,12 +133,6 @@ export class PublicHolidaysService {
       date: null, image: '',
     },
     {
-      summary: { kh: 'គោរពវិញ្ញាណក្ខន្ធសម្តេចព្រះសុរាម្រឹត', en: '' },
-      description: 'General Event',
-      start_date: { day: 6, month: 3 },
-      date: null, image: '',
-    },
-    {
       summary: { kh: 'ទិវាពិភពលោកទឹក និងឧតុនិយម', en: 'World Water and World Meteorological Day' },
       description: 'General Event',
       start_date: { day: 22, month: 3 },
@@ -199,30 +194,6 @@ export class PublicHolidaysService {
       description: 'Holiday in Cambodia',
       start_date: { day: '៤រោច', month: 'ពិសាខ' },
       image: '',
-    },
-    {
-      summary: { kh: 'តាំងពិធីត្រស្តិសង្ក្រាន្ត', en: '' },
-      description: 'General Event',
-      start_date: { day: '១២រោច', month: 'ផល្គុន' },
-      image: '',
-    },
-    {
-      summary: { kh: 'តាំងពិធីត្រស្តិសង្ក្រាន្ត', en: '' },
-      description: 'General Event',
-      start_date: { day: '១៣រោច', month: 'ផល្គុន' },
-      image: '',
-    },
-    {
-      summary: { kh: 'តាំងពិធីត្រស្តិសង្ក្រាន្ត', en: '' },
-      description: 'General Event',
-      start_date: { day: '១៤រោច', month: 'ផល្គុន' },
-      image: '',
-    },
-    {
-      summary: { kh: 'ព្រះរាជពិធីត្រស្តិសង្ក្រាន្ត', en: '' },
-      description: 'General Event',
-      start_date: { day: '១៥រោច', month: 'ផល្គុន' },
-      image: '',
-    },
+    }
   ];
 }

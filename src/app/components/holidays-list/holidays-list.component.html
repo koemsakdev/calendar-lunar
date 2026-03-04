@@ -1,69 +1,84 @@
 <!-- holidays-list.component.html -->
-<div class="w-full mx-auto py-6">
-  <!-- Header -->
-  <h2
-    class="text-xl md:text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-6"
-  >
-    {{ "ព្រឹត្តិការណ៍ប្រចាំខែ " + monthLabel }}
-  </h2>
+<!-- pb-24 = padding so content clears the tab bar at the bottom -->
+<div class="w-full mx-auto">
 
-  <!-- Timeline -->
-  <ol class="space-y-2">
+  <!-- ── Section Header ───────────────────────────────────── -->
+  <div class="flex items-center gap-2 mb-5">
+    <div class="w-1 h-6 rounded-full bg-[#F04923] dark:bg-[#FF7A52]"></div>
+    <h2 class="font-moul text-base text-neutral-800 dark:text-neutral-100 leading-loose overflow-visible">
+      ព្រឹត្តិការណ៍ប្រចាំខែ {{ monthLabel }}
+    </h2>
+  </div>
+
+  <!-- ── Events List ──────────────────────────────────────── -->
+  <ol class="space-y-2.5">
     <li *ngFor="let holiday of filteredAttributes">
       <div
-        class="rounded-lg shadow-sm p-3 transition-all duration-200 hover:shadow-md"
-        [ngClass]=" isHoliday(holiday) ? 'bg-red-50 dark:bg-red-900/20' : 'bg-blue-50/50 dark:bg-sky-800'"
+        class="relative flex items-stretch rounded-xl overflow-hidden
+               transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
+        [ngClass]="isHoliday(holiday)
+          ? 'bg-red-50 dark:bg-red-950 ring-1 ring-red-100 dark:ring-red-900'
+          : 'bg-blue-50 dark:bg-blue-950 ring-1 ring-blue-100 dark:ring-blue-900'"
       >
-        <!-- Date -->
-        <time
-          class="block text-xs font-medium mb-2"
-          [ngClass]="
-            isHoliday(holiday)
-              ? 'text-red-500'
-              : 'text-blue-500 dark:text-gray-400'
-          "
-        >
-          {{ formatDate(holiday.dates) }}
-        </time>
+        <!-- Left accent stripe -->
+        <div
+          class="w-1 flex-shrink-0"
+          [ngClass]="isHoliday(holiday) ? 'bg-[#F04923]' : 'bg-blue-400 dark:bg-blue-500'"
+        ></div>
 
-        <!-- Khmer Title -->
-        <h3
-          class="text-sm md:text-lg font-semibold"
-          [ngClass]="
-            isHoliday(holiday)
-              ? 'text-red-500'
-              : 'text-blue-600 dark:text-white'
-          "
-        >
-          {{ getTitleKh(holiday) }}
-        </h3>
+        <div class="flex-1 min-w-0 px-3 py-3">
+          <!-- Date -->
+          <time
+            class="font-siemreap block text-[11px] font-medium mb-1 leading-loose overflow-visible"
+            [ngClass]="isHoliday(holiday)
+              ? 'text-[#F04923] dark:text-[#FF7A52]'
+              : 'text-blue-500 dark:text-blue-400'"
+          >{{ formatDate(holiday.dates) }}</time>
 
-        <!-- English Title -->
-        <p
-          class="text-xs mt-1"
-          [ngClass]="
-            isHoliday(holiday)
-              ? 'text-red-400'
-              : 'text-gray-600 dark:text-gray-300'
-          "
-        >
-          {{ getTitleEn(holiday) }}
-        </p>
+          <!-- Khmer title -->
+          <h3
+            class="font-moul text-sm leading-loose overflow-visible mb-0.5"
+            [ngClass]="isHoliday(holiday)
+              ? 'text-[#F04923] dark:text-[#FF7A52]'
+              : 'text-blue-700 dark:text-blue-300'"
+          >{{ getTitleKh(holiday) }}</h3>
+
+          <!-- English title -->
+          <p
+            class="font-siemreap text-xs leading-relaxed"
+            [ngClass]="isHoliday(holiday)
+              ? 'text-neutral-500 dark:text-neutral-400'
+              : 'text-neutral-500 dark:text-neutral-400'"
+          >{{ getTitleEn(holiday) }}</p>
+        </div>
+
+        <!-- Badge -->
+        <div class="flex-shrink-0 self-start pt-3 pr-3">
+          <span
+            class="font-siemreap text-[10px] font-medium px-2 py-0.5 rounded-full"
+            style="line-height: 1.8"
+            [ngClass]="isHoliday(holiday)
+              ? 'bg-[#F04923]/10 text-[#F04923] dark:bg-[#F04923]/20 dark:text-[#FF7A52]'
+              : 'bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400'"
+          >{{ isHoliday(holiday) ? 'បុណ្យ' : 'ព្រឹត្តិការណ៍' }}</span>
+        </div>
       </div>
     </li>
   </ol>
 
-  <!-- Empty State -->
+  <!-- ── Empty State ──────────────────────────────────────── -->
   <div
     *ngIf="filteredAttributes.length === 0"
-    class="mt-10 flex flex-col items-center justify-center text-center text-gray-500 dark:text-gray-400"
+    class="mt-12 flex flex-col items-center justify-center text-center"
   >
-    <div
-      class="w-16 h-16 rounded-full bg-gray-100 dark:bg-neutral-800 flex items-center justify-center mb-4"
-    >
-      <ion-icon name="calendar-outline" class="text-2xl"></ion-icon>
+    <div class="w-16 h-16 rounded-full bg-[#F04923]/10 flex items-center justify-center mb-3">
+      <ion-icon name="calendar-outline" class="text-2xl text-[#F04923]"></ion-icon>
     </div>
-
-    <p class="text-sm">No events this month</p>
+    <p class="font-moul text-sm text-neutral-400 dark:text-neutral-500 leading-loose">
+      គ្មានព្រឹត្តិការណ៍ខែនេះ
+    </p>
+    <p class="font-siemreap text-xs text-neutral-400 dark:text-neutral-500 mt-1">
+      No events this month
+    </p>
   </div>
 </div>

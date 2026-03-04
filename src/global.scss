@@ -54,3 +54,60 @@
 /* Ionic optional utilities */
 @import "@ionic/angular/css/padding.css";
 @import "@ionic/angular/css/flex-utils.css";
+
+:root {
+  --brand:              #F04923;
+  --brand-light:        #FF7A52;
+  --brand-dark:         #D43F1F;
+  --brand-tint:         rgba(240, 73, 35, 0.10);
+
+  --ion-color-primary:        #F04923;
+  --ion-color-primary-rgb:    240, 73, 35;
+  --ion-color-primary-shade:  #D43F1F;
+  --ion-color-primary-tint:   #FF7A52;
+}
+
+// ── Font helpers (plain CSS classes, NOT @layer) ──────────────────
+.font-moul {
+  font-family: 'Moul', serif;
+  line-height: 1.8;
+  overflow: visible;
+}
+
+.font-siemreap {
+  font-family: 'Siemreap', 'Sora', sans-serif;
+  line-height: 1.75;
+  overflow: visible;
+}
+
+
+// ── Dark mode (system preference) ────────────────────────────────
+@media (prefers-color-scheme: dark) {
+  ion-tab-bar {
+    --background: #1a1a1a;
+    --color: #737373;
+    --color-selected: #FF7A52;
+    box-shadow: 0 -2px 16px rgba(0, 0, 0, 0.35);
+  }
+}
+
+// ── Dark mode (manual .dark class on <html> or <ion-app>) ─────────
+.dark {
+  ion-tab-bar {
+    --background: #1a1a1a;
+    --color: #737373;
+    --color-selected: #FF7A52;
+    box-shadow: 0 -2px 16px rgba(0, 0, 0, 0.35);
+  }
+}
+
+// ── Scrollbar ─────────────────────────────────────────────────────
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(240, 73, 35, 0.25);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(240, 73, 35, 0.45);
+}
