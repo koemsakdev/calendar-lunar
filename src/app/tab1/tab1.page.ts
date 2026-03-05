@@ -24,6 +24,8 @@ import {
   moonOutline,
 } from 'ionicons/icons';
 import { FilterModalComponent } from '../shared/filter-modal/filter-modal.component';
+import { AdService } from '../services/ad.service';
+import { AdBannerComponent } from '../shared/ad-banner/ad-banner.component';
 
 export interface DayDetail {
   date: moment.Moment;
@@ -47,11 +49,13 @@ type AttrType = 'holiday' | 'traditional' | 'general';
     IonContent,
     IonIcon,
     FilterModalComponent,
+    AdBannerComponent
   ],
 })
 export class Tab1Page {
   calendarStore = inject(CalendarStoreService);
   khmerDateService = inject(KhmerDateService);
+  adSvc = inject(AdService);
 
   openModal = signal(false);
   detail = signal<DayDetail | null>(null);

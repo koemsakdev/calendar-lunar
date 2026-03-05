@@ -6,6 +6,11 @@
 </ion-header>
 
 <ion-content>
+  <!-- ── Ads — show right below header ── -->
+  <div class="pt-2">
+    <app-ad-banner *ngFor="let ad of adSvc.activeAds()" [ad]="ad">
+    </app-ad-banner>
+  </div>
 
   <div class="px-4 pt-4 pb-28">
     <!-- ── Today summary ────────────────────────────────────── -->
@@ -48,16 +53,16 @@
           ? 'bg-neutral-100 dark:bg-neutral-800 opacity-60'
           : 'bg-white dark:bg-neutral-800 shadow-sm ring-1 ring-neutral-100 dark:ring-neutral-700'"
       >
-        <div class="w-1 flex-shrink-0 bg-violet-500"></div>
+        <div class="w-1 flex-shrink-0 bg-orange-500"></div>
 
         <div class="flex-1 min-w-0 px-3 py-3">
           <div class="flex items-start justify-between gap-2">
-            <h3
-              class="font-moul text-sm leading-loose overflow-visible"
-              [ngClass]="isPast(r) ? 'text-neutral-400' : 'text-neutral-800 dark:text-neutral-100'"
+            <p
+              class="text-lg leading-loose overflow-visible reminder-card-title"
+              [ngClass]="isPast(r) ? 'text-neutral-400' : 'text-neutral-600 dark:text-neutral-100'"
             >
               {{ r.title }}
-            </h3>
+            </p>
             <span
               *ngIf="r.repeat !== 'none'"
               class="flex-shrink-0 font-siemreap text-[10px] px-2 py-0.5 rounded-full mt-1 bg-violet-100 dark:bg-violet-900/40 text-violet-600 dark:text-violet-400"
@@ -102,19 +107,28 @@
         <div class="flex flex-col justify-center gap-1 pr-2">
           <button
             (click)="openEdit(r)"
-            class="w-8 h-8 flex items-center justify-center rounded-lg bg-neutral-100 dark:bg-neutral-700 text-neutral-500 hover:bg-[#F04923]/10 hover:text-[#F04923] transition-colors"
+            class="w-8 h-8 flex items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-700 text-blue-500 hover:bg-blue-500/10 hover:text-blue-500 transition-colors"
           >
             <ion-icon name="create-outline" class="text-base"></ion-icon>
           </button>
           <button
             (click)="deleteReminder(r)"
-            class="w-8 h-8 flex items-center justify-center rounded-lg bg-neutral-100 dark:bg-neutral-700 text-neutral-500 hover:bg-red-50 hover:text-red-500 transition-colors"
+            class="w-8 h-8 flex items-center justify-center rounded-lg bg-red-100 dark:bg-red-700 text-red-500 hover:bg-red-50 hover:text-red-500 transition-colors"
           >
             <ion-icon name="trash-outline" class="text-base"></ion-icon>
+          </button>
+
+          <button
+            (click)="showReminderDetails(r)"
+            class="w-8 h-8 flex items-center justify-center rounded-lg bg-violet-100 dark:bg-violet-900/40 text-violet-500 hover:bg-violet-200 transition-colors"
+          >
+            <ion-icon name="notifications-outline" class="text-base"></ion-icon>
           </button>
         </div>
       </div>
     </div>
+
+    <app-reminder-alert #reminderAlert></app-reminder-alert>
 
     <!-- ── Empty state ───────────────────────────────────────── -->
     <div
@@ -149,7 +163,7 @@
   </div>
 
   <!-- FAB -->
-  <div *ngIf="reminders().length > 0" class="fixed bottom-24 right-5 z-50">
+  <div *ngIf="reminders().length > 0" class="fixed bottom-4 right-5 z-50">
     <button
       (click)="openCreate()"
       class="w-14 h-14 rounded-full bg-[#F04923] text-white shadow-lg shadow-[#F04923]/40 flex items-center justify-center active:scale-95 transition-all duration-150"
@@ -293,7 +307,7 @@
           trigger="time-trigger"
           [initialBreakpoint]="0.5"
           [breakpoints]="[0, 0.5]"
-          cssClass="picker-modal"
+          cssClass="picker-modal picker-sheet time-picker-sheet"
           (ionModalDidPresent)="onTimeModalOpen()"
         >
           <ng-template>
@@ -319,7 +333,7 @@
         class="font-siemreap text-xs text-neutral-500 dark:text-neutral-400 block mb-2"
         style="line-height: 1.8"
       >
-        ការដដែលៗ
+        Schedule repeat (optional)
       </label>
       <div class="grid grid-cols-2 gap-2">
         <button
@@ -335,7 +349,7 @@
             [name]="repeatIcon(opt)"
             class="text-base flex-shrink-0"
           ></ion-icon>
-          <span class="font-siemreap text-xs">{{ repeatLabels[opt].kh }}</span>
+          <span class="font-siemreap text-xs">{{ repeatLabels[opt].en }}</span>
         </button>
       </div>
     </div>

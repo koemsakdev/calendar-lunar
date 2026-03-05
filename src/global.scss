@@ -40,7 +40,6 @@
 // /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 // @import '@ionic/angular/css/palettes/dark.system.css';
 
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -56,37 +55,36 @@
 @import "@ionic/angular/css/flex-utils.css";
 
 :root {
-  --brand:              #F04923;
-  --brand-light:        #FF7A52;
-  --brand-dark:         #D43F1F;
-  --brand-tint:         rgba(240, 73, 35, 0.10);
+  --brand: #f04923;
+  --brand-light: #ff7a52;
+  --brand-dark: #d43f1f;
+  --brand-tint: rgba(240, 73, 35, 0.1);
 
-  --ion-color-primary:        #F04923;
-  --ion-color-primary-rgb:    240, 73, 35;
-  --ion-color-primary-shade:  #D43F1F;
-  --ion-color-primary-tint:   #FF7A52;
+  --ion-color-primary: #f04923;
+  --ion-color-primary-rgb: 240, 73, 35;
+  --ion-color-primary-shade: #d43f1f;
+  --ion-color-primary-tint: #ff7a52;
 }
 
 // ── Font helpers (plain CSS classes, NOT @layer) ──────────────────
 .font-moul {
-  font-family: 'Moul', serif;
+  font-family: "Moul", serif;
   line-height: 1.8;
   overflow: visible;
 }
 
 .font-siemreap {
-  font-family: 'Siemreap', 'Sora', sans-serif;
+  font-family: "Siemreap", "Sora", sans-serif;
   line-height: 1.75;
   overflow: visible;
 }
-
 
 // ── Dark mode (system preference) ────────────────────────────────
 @media (prefers-color-scheme: dark) {
   ion-tab-bar {
     --background: #1a1a1a;
     --color: #737373;
-    --color-selected: #FF7A52;
+    --color-selected: #ff7a52;
     box-shadow: 0 -2px 16px rgba(0, 0, 0, 0.35);
   }
 }
@@ -96,14 +94,18 @@
   ion-tab-bar {
     --background: #1a1a1a;
     --color: #737373;
-    --color-selected: #FF7A52;
+    --color-selected: #ff7a52;
     box-shadow: 0 -2px 16px rgba(0, 0, 0, 0.35);
   }
 }
 
 // ── Scrollbar ─────────────────────────────────────────────────────
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
 ::-webkit-scrollbar-thumb {
   background: rgba(240, 73, 35, 0.25);
   border-radius: 4px;
@@ -111,3 +113,106 @@
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(240, 73, 35, 0.45);
 }
+
+// ── Khmer Alert ───────────────────────────────────────────────────
+.khmer-alert {
+  .alert-wrapper.sc-ion-alert-md,
+  .alert-wrapper.sc-ion-alert-ios,
+  .alert-wrapper {
+    border-radius: 24px !important;
+    padding: 4px !important;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15) !important;
+  }
+
+  Header .alert-head.sc-ion-alert-md,
+  .alert-head.sc-ion-alert-ios,
+  .alert-head {
+    padding: 22px 22px 8px !important;
+  }
+
+  // Title
+  .alert-title.sc-ion-alert-md,
+  .alert-title.sc-ion-alert-ios,
+  .alert-title {
+    font-family: "Moul", "Sora", sans-serif !important;
+    font-size: 16px !important;
+    color: #f04923 !important;
+    line-height: 1.8 !important;
+  }
+
+  // Sub title
+  .alert-sub-title.sc-ion-alert-md,
+  .alert-sub-title.sc-ion-alert-ios,
+  .alert-sub-title {
+    font-family: "Moul", "Sora", sans-serif !important;
+    font-size: 13px !important;
+    color: #262626 !important;
+    line-height: 1.8 !important;
+    margin-top: 4px !important;
+  }
+
+  // Message
+  .alert-message.sc-ion-alert-md,
+  .alert-message.sc-ion-alert-ios,
+  .alert-message {
+    font-family: "Siemreap", "Sora", sans-serif !important;
+    font-size: 13px !important;
+    line-height: 1.8 !important;
+    color: #525252 !important;
+    padding: 0 22px 18px !important;
+    white-space: pre-line !important;
+  }
+
+  // Cancel button
+  .alert-btn-cancel.sc-ion-alert-md,
+  .alert-btn-cancel.sc-ion-alert-ios,
+  .alert-btn-cancel {
+    background: #f5f5f5 !important;
+
+    .alert-button-inner {
+      font-family: "Siemreap", "Sora", sans-serif !important;
+      font-size: 13px !important;
+      color: #0059ff !important;
+      justify-content: center !important;
+    }
+  }
+
+  // Danger/delete button
+  .alert-btn-danger.sc-ion-alert-md,
+  .alert-btn-danger.sc-ion-alert-ios,
+  .alert-btn-danger {
+    .alert-button-inner {
+      font-family: "Siemreap", "Sora", sans-serif !important;
+      font-size: 13px !important;
+      // color: white !important;
+      justify-content: center !important;
+    }
+  }
+
+  .alert-sub-title.sc-ion-alert-md,
+  .alert-sub-title.sc-ion-alert-ios,
+  .alert-sub-title {
+    font-family: "Sora", "Moul", sans-serif !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    line-height: 1.8 !important;
+  }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(40px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.reminder-card {
+  animation: slide-up 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+// .time-picker-sheet {
+//   --height: 380px !important;  // fixed height just enough for the wheel
+  
+//   &::part(content) {
+//     height: 380px !important;
+//     border-radius: 28px 28px 0 0;
+//   }
+// }

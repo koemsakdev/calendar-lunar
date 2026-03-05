@@ -1,0 +1,135 @@
+<div
+  *ngIf="visible()"
+  class="fixed inset-0 z-[9999] flex items-end sm:items-center justify-center px-4 pb-16 sm:pb-0"
+  style="background: rgba(0, 0, 0, 0.45); backdrop-filter: blur(6px)"
+  (click)="onBackdropClick($event)"
+>
+  <div
+    #card
+    class="reminder-card w-full max-w-sm bg-white dark:bg-neutral-900 rounded-3xl overflow-hidden shadow-2xl"
+    (click)="$event.stopPropagation()"
+  >
+    <!-- Bell icon circle -->
+    <div class="flex flex-col items-center pt-8 pb-2 px-6">
+      <div
+        class="w-16 h-16 rounded-full bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center mb-4 ring-4 ring-blue-100 dark:ring-blue-900/20"
+      >
+        <ion-icon
+          name="alarm-outline"
+          class="text-3xl text-blue-400"
+        ></ion-icon>
+      </div>
+
+      <!-- Ongoing badge -->
+      <span
+        class="font-siemreap text-xs text-orange-400 bg-orange-100 dark:bg-neutral-800 px-3 py-1 rounded-full mb-3"
+        style="line-height: 1.8"
+      >
+        ការរំលឹក
+      </span>
+
+      <!-- Title -->
+      <h2
+        class="reminder-title text-lg text-neutral-800 dark:text-neutral-100 text-center leading-loose overflow-visible"
+      >
+        {{ data().title }}
+      </h2>
+
+      <!-- Note -->
+      <p
+        *ngIf="data().note"
+        class="reminder-note text-sm text-neutral-500 dark:text-neutral-400 text-center leading-relaxed mb-4"
+        style="line-height: 1.8"
+      >
+        {{ data().note }}
+      </p>
+    </div>
+
+    <!-- Info rows -->
+    <div
+      class="mx-5 mb-5 rounded-2xl bg-neutral-50 dark:bg-neutral-800 divide-y divide-neutral-100 dark:divide-neutral-700 overflow-hidden"
+    >
+      <div class="flex items-center gap-3 px-4 py-3">
+        <div
+          class="w-7 h-7 rounded-lg bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center flex-shrink-0"
+        >
+          <ion-icon
+            name="time-outline"
+            class="text-blue-500 text-sm"
+          ></ion-icon>
+        </div>
+        <div>
+          <p
+            class="font-siemreap text-[10px] text-neutral-400 uppercase tracking-wider"
+            style="line-height: 1.6"
+          >
+            ម៉ោង
+          </p>
+          <p
+            class="font-siemreap text-sm text-neutral-700 dark:text-neutral-200"
+            style="line-height: 1.8"
+          >
+            {{ data().time }}
+          </p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3 px-4 py-3">
+        <div
+          class="w-7 h-7 rounded-lg bg-orange-100 dark:bg-orange-900/40 flex items-center justify-center flex-shrink-0"
+        >
+          <ion-icon
+            name="location-outline"
+            class="text-[#F04923] text-sm"
+          ></ion-icon>
+        </div>
+        <div>
+          <p
+            class="font-siemreap text-[10px] text-neutral-400 uppercase tracking-wider"
+            style="line-height: 1.6"
+          >
+            កាលបរិច្ឆេទ
+          </p>
+          <p
+            class="font-siemreap text-sm text-neutral-700 dark:text-neutral-200"
+            style="line-height: 1.8"
+          >
+            {{ data().date }}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="px-5 pb-6 space-y-2">
+      <!-- Dismiss -->
+      <button
+        (click)="dismiss()"
+        class="w-full flex items-center justify-center gap-2 py-3 rounded-2xl bg-orange-500 text-white font-siemreap text-sm font-semibold active:scale-[0.98] transition-all duration-150"
+        style="line-height: 1.8"
+      >
+        <ion-icon name="alarm-outline" class="text-lg"></ion-icon>
+        បិទការជូនដំណឹង
+      </button>
+
+      <!-- Snooze -->
+      <button
+        (click)="snooze()"
+        class="w-full py-3.5 rounded-2xl border-2 border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 font-siemreap text-sm text-orange-700 dark:text-orange-300 active:scale-[0.98] transition-all duration-150"
+        style="line-height: 1.8"
+      >
+        ពន្យារ 15 នាទី
+      </button>
+
+      <!-- Edit link -->
+      <button
+        (click)="edit()"
+        class="w-full flex items-center justify-center gap-1.5 py-2 font-siemreap text-xs text-blue-400 hover:text-[#F04923] transition-colors"
+        style="line-height: 1.8"
+      >
+        <ion-icon name="pencil-outline" class="text-sm"></ion-icon>
+        កែប្រែការរំលឹក
+      </button>
+    </div>
+  </div>
+</div>

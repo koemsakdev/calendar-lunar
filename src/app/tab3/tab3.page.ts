@@ -17,7 +17,6 @@ import {
   IonTitle,
   IonContent,
   IonIcon,
-  IonButton,
   IonDatetime,
   IonModal,
   AlertController,
@@ -44,6 +43,11 @@ import {
 } from '../services/reminder.service';
 import { AlarmService } from '../services/alarm.service';
 import { FilterModalComponent } from '../shared/filter-modal/filter-modal.component';
+import { Capacitor } from '@capacitor/core';
+import { LocalNotifications } from '@capacitor/local-notifications';
+import { ReminderAlertComponent } from '../components/reminder-alert/reminder-alert.component';
+import { AdService } from '../services/ad.service';
+import { AdBannerComponent } from '../shared/ad-banner/ad-banner.component';
 
 interface ReminderForm {
   id: string;
@@ -88,10 +92,11 @@ const REPEAT_ICONS: Record<RepeatType, string> = {
     IonTitle,
     IonContent,
     IonIcon,
-    IonButton,
     IonDatetime,
     IonModal,
     FilterModalComponent,
+    ReminderAlertComponent,
+    AdBannerComponent
   ],
   templateUrl: './tab3.page.html',
   styleUrls: ['./tab3.page.scss'],
@@ -102,8 +107,12 @@ export class Tab3Page implements OnInit, OnDestroy {
   private ngZone = inject(NgZone);
   private alarmSvc = inject(AlarmService);
 
+  adSvc = inject(AdService);
+
   @ViewChild('datePicker') datePicker?: IonDatetime;
   @ViewChild('timePicker') timePicker?: IonDatetime;
+
+  @ViewChild('reminderAlert', { static: false }) reminderAlert?: ReminderAlertComponent;
 
   reminders = signal<Reminder[]>([]);
   formModalOpen = signal(false);
@@ -151,7 +160,7 @@ export class Tab3Page implements OnInit, OnDestroy {
     this.reminderSvc.syncToStore();
     this.scheduleAllAlarms();
 
-    if ('Notification' in window) {
+    if ('Notification' in window || Capacitor.isNativePlatform()) {
       Notification.requestPermission();
     }
   }
@@ -184,7 +193,7 @@ export class Tab3Page implements OnInit, OnDestroy {
             this.ngZone.run(() => {
               this.alarmSvc.playAlarm();
               this.showReminderAlert(r);
-              this.showBrowserNotification(r);
+              this.showNotification(r);
             });
           }, msUntil);
           this.scheduledTimers.push(timer);
@@ -194,15 +203,38 @@ export class Tab3Page implements OnInit, OnDestroy {
   }
 
   // ── Browser notification (shows even when tab is in background) ───
-  private showBrowserNotification(r: Reminder): void {
-    if ('Notification' in window && Notification.permission === 'granted') {
-      new Notification('⏰ ការរំលឹក — ' + r.title, {
-        body: r.note
-          ? `${r.note}\n🕐 ${this.formatTime12h(r.time)} ${this.getAmPm(r.time)}`
-          : `🕐 ${this.formatTime12h(r.time)} ${this.getAmPm(r.time)}`,
-        icon: 'assets/icon/favicon.png',
-        requireInteraction: true, // keeps notification visible until dismissed
+  private async showNotification(r: Reminder): Promise<void> {
+    const isNative = Capacitor.isNativePlatform(); // true on iOS/Android app
+
+    if (isNative) {
+      // ── Native iOS/Android notification ───────────────────────────
+      const perm = await LocalNotifications.requestPermissions();
+      if (perm.display !== 'granted') return;
+
+      await LocalNotifications.schedule({
+        notifications: [{
+          id: Date.now(),
+          title: '⏰ ការរំលឹក',
+          body: r.note
+            ? `${r.title}\n${r.note}`
+            : r.title,
+          schedule: { at: new Date(Date.now() + 500) }, // fire immediately
+          sound: 'default',
+          smallIcon: 'ic_launcher',
+        }],
       });
+
+    } else {
+      // ── Web browser notification ───────────────────────────────────
+      if ('Notification' in window && Notification.permission === 'granted') {
+        new Notification('⏰ ការរំលឹក — ' + r.title, {
+          body: r.note
+            ? `${r.note}\n🕐 ${this.formatTime12h(r.time)} ${this.getAmPm(r.time)}`
+            : `🕐 ${this.formatTime12h(r.time)} ${this.getAmPm(r.time)}`,
+          icon: 'assets/calendar-khmer-logo.png',
+          requireInteraction: true,
+        });
+      }
     }
   }
 
@@ -324,28 +356,37 @@ export class Tab3Page implements OnInit, OnDestroy {
     await alert.present();
   }
 
+  showReminderDetails(r: Reminder): void {
+    this.showReminderAlert(r);
+  }
+
   // ── Reminder alert dialog ─────────────────────────────────────────
-  private async showReminderAlert(r: Reminder): Promise<void> {
-    const alert = await this.alertCtrl.create({
-      header: '⏰ ការរំលឹក',
-      subHeader: r.title,
-      message: [
-        r.note || '',
-        `🕐 ${this.formatTime12h(r.time)} ${this.getAmPm(r.time)} · ${this.formatDateEn(r.date)}`,
-      ]
-        .filter(Boolean)
-        .join('\n'),
-      cssClass: 'khmer-alert reminder-alert',
-      backdropDismiss: false,
-      buttons: [
-        {
-          text: 'យល់ព្រម',
-          role: 'cancel',
-          handler: () => this.alarmSvc.stopAlarm(), // stop sound on dismiss
+  private showReminderAlert(r: Reminder): void {
+    if (!this.reminderAlert) {
+      console.warn('reminderAlert not ready');
+      return;
+    }
+    this.reminderAlert.show(
+      {
+        title: r.title,
+        note: r.note,
+        time: `${this.formatTime12h(r.time)} ${this.getAmPm(r.time)}`,
+        date: this.formatDateEn(r.date),
+      },
+      {
+        onSnooze: () => {
+          const snoozeTime = moment().add(1, 'minutes');
+          const msUntil = snoozeTime.diff(moment());
+          setTimeout(() => {
+            this.ngZone.run(() => {
+              this.alarmSvc.playAlarm();
+              this.showReminderAlert(r);
+            });
+          }, msUntil);
         },
-      ],
-    });
-    await alert.present();
+        onEdit: () => this.openEdit(r),
+      }
+    );
   }
 
   // ── Display helpers ───────────────────────────────────────────────
@@ -377,6 +418,9 @@ export class Tab3Page implements OnInit, OnDestroy {
   }
 
   isPast(r: Reminder): boolean {
-    return r.repeat === 'none' && moment(r.date).isBefore(moment(), 'day');
+    if (r.repeat !== 'none') return false;
+
+    const reminderDateTime = moment(`${r.date} ${r.time}`, 'YYYY-MM-DD HH:mm');
+    return reminderDateTime.isBefore(moment()); // compares full date + time
   }
 }

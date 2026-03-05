@@ -1,75 +1,24 @@
 // Add these into your global.scss
 // ── Khmer Alert styles ────────────────────────────────────────────
 
-.khmer-alert {
-  .alert-wrapper {
-    border-radius: 20px !important;
-    padding: 4px;
-    background: white;
-
-    .dark & {
-      background: #1a1a1a;
-    }
-  }
-
-  .alert-head {
-    padding: 20px 20px 8px;
-
-    .alert-title {
-      font-family: 'Moul', serif !important;
-      font-size: 16px !important;
-      color: #F04923 !important;
-      line-height: 1.8 !important;
-    }
-
-    .alert-sub-title {
-      font-family: 'Moul', serif !important;
-      font-size: 13px !important;
-      color: #262626 !important;
-      line-height: 1.8 !important;
-      margin-top: 4px;
-
-      .dark & { color: #f5f5f5 !important; }
-    }
-  }
-
-  .alert-message {
-    font-family: 'Siemreap', serif !important;
-    font-size: 13px !important;
-    line-height: 1.8 !important;
-    color: #525252 !important;
-    padding: 0 20px 16px !important;
-    white-space: pre-line;
-
-    .dark & { color: #a3a3a3 !important; }
-  }
-
-  .alert-button-group {
-    padding: 0 12px 12px !important;
-    gap: 8px;
-
-    .alert-btn-cancel {
-      button {
-        border-radius: 12px !important;
-        font-family: 'Siemreap', serif !important;
-        font-size: 13px !important;
-        background: #f5f5f5 !important;
-        color: #525252 !important;
-      }
-    }
-
-    .alert-btn-danger {
-      button {
-        border-radius: 12px !important;
-        font-family: 'Siemreap', serif !important;
-        font-size: 13px !important;
-        background: #F04923 !important;
-        color: white !important;
-      }
-    }
-  }
+.reminder-card-title {
+  font-family: "Sora", "Moul", sans-serif !important;
 }
 
+// Reminder alert — violet accent
+.reminder-alert {
+  .alert-wrapper.sc-ion-alert-md,
+  .alert-wrapper.sc-ion-alert-ios,
+  .alert-wrapper {
+    border: 2px solid rgba(139, 92, 246, 0.25) !important;
+  }
+
+  .alert-title.sc-ion-alert-md,
+  .alert-title.sc-ion-alert-ios,
+  .alert-title {
+    color: #7c3aed !important;
+  }
+}
 // Reminder fire alert — slightly distinct
 .reminder-alert {
   .alert-wrapper {
@@ -106,31 +55,35 @@ ion-datetime.custom-datetime {
 
   // ── Month/year header button ─────────────────────────────────
   &::part(month-year-button) {
-    font-family: 'Sora', sans-serif;
+    font-family: "Sora", sans-serif;
     font-size: 17px;
     font-weight: 700;
     color: #1a1a1a;
     letter-spacing: -0.3px;
 
-    .dark & { color: #f5f5f5; }
+    .dark & {
+      color: #f5f5f5;
+    }
   }
 
   // ── Prev / Next arrows ───────────────────────────────────────
   &::part(prev-button),
   &::part(next-button) {
-    color: #F04923;
+    color: #92321c;
     background: rgba(240, 73, 35, 0.08);
     border-radius: 12px;
     width: 36px;
     height: 36px;
     transition: background 0.15s;
 
-    &:hover { background: rgba(240, 73, 35, 0.18); }
+    &:hover {
+      background: rgba(240, 73, 35, 0.18);
+    }
   }
 
   // ── Day of week headers ──────────────────────────────────────
   &::part(day-of-week) {
-    font-family: 'Sora', sans-serif;
+    font-family: "Sora", sans-serif;
     font-size: 11px;
     font-weight: 600;
     color: #a3a3a3;
@@ -140,7 +93,7 @@ ion-datetime.custom-datetime {
 
   // ── All calendar day cells ───────────────────────────────────
   &::part(calendar-day) {
-    font-family: 'Sora', sans-serif;
+    font-family: "Sora", sans-serif;
     font-size: 14px;
     font-weight: 500;
     border-radius: 12px;
@@ -149,13 +102,15 @@ ion-datetime.custom-datetime {
     width: 36px;
     height: 36px;
 
-    .dark & { color: #e5e5e5; }
+    .dark & {
+      color: #e5e5e5;
+    }
   }
 
   // ── Today ────────────────────────────────────────────────────
   &::part(calendar-day today) {
     font-weight: 700;
-    color: #F04923;
+    color: #f04923;
     background: rgba(240, 73, 35, 0.08);
     border-radius: 12px;
   }
@@ -163,7 +118,7 @@ ion-datetime.custom-datetime {
   // ── Selected ─────────────────────────────────────────────────
   &::part(calendar-day active),
   &::part(calendar-day active today) {
-    background: #F04923 !important;
+    background: #f04923 !important;
     color: #ffffff !important;
     font-weight: 700 !important;
     border-radius: 12px !important;
@@ -173,19 +128,21 @@ ion-datetime.custom-datetime {
   // ── Hover ────────────────────────────────────────────────────
   &::part(calendar-day):not([disabled]):hover {
     background: rgba(240, 73, 35, 0.1);
-    color: #F04923;
+    color: #f04923;
   }
 
   // ── Time display numbers ─────────────────────────────────────
   &::part(time-button) {
-    font-family: 'Sora', sans-serif;
+    font-family: "Sora", sans-serif;
     font-size: 52px;
     font-weight: 800;
     color: #1a1a1a;
     letter-spacing: -2px;
     background: transparent;
 
-    .dark & { color: #f5f5f5; }
+    .dark & {
+      color: #f5f5f5;
+    }
   }
 
   // ── Time button active/focus state ───────────────────────────
@@ -193,33 +150,37 @@ ion-datetime.custom-datetime {
   &::part(time-button).time-active {
     background: rgba(240, 73, 35, 0.08);
     border-radius: 14px;
-    color: #F04923;
+    color: #f04923;
   }
 
   // ── AM/PM pill ───────────────────────────────────────────────
   &::part(am-pm-button) {
-    font-family: 'Sora', sans-serif;
+    font-family: "Sora", sans-serif;
     font-size: 15px;
     font-weight: 700;
-    color: #F04923;
+    color: #f04923;
     background: rgba(240, 73, 35, 0.1);
     border-radius: 14px;
     padding: 8px 14px;
     border: 1.5px solid rgba(240, 73, 35, 0.2);
     transition: all 0.15s;
 
-    &:hover { background: rgba(240, 73, 35, 0.2); }
+    &:hover {
+      background: rgba(240, 73, 35, 0.2);
+    }
   }
 
   // ── Time colon separator ─────────────────────────────────────
   &::part(time-colon) {
-    font-family: 'Sora', sans-serif;
+    font-family: "Sora", sans-serif;
     font-size: 52px;
     font-weight: 800;
     color: #d4d4d4;
     letter-spacing: 0;
 
-    .dark & { color: #404040; }
+    .dark & {
+      color: #404040;
+    }
   }
 
   // ── Action buttons row ───────────────────────────────────────
@@ -228,11 +189,13 @@ ion-datetime.custom-datetime {
     gap: 10px;
     border-top: 1px solid #f0f0f0;
 
-    .dark & { border-top-color: #2a2a2a; }
+    .dark & {
+      border-top-color: #2a2a2a;
+    }
   }
 
   &::part(cancel-button) {
-    font-family: 'Siemreap', serif;
+    font-family: "Siemreap", serif;
     font-size: 14px;
     font-weight: 500;
     color: #737373;
@@ -246,25 +209,57 @@ ion-datetime.custom-datetime {
       color: #a3a3a3;
     }
 
-    &:hover { background: #e5e5e5; }
+    &:hover {
+      background: #e5e5e5;
+    }
   }
 
   &::part(confirm-button) {
-    font-family: 'Siemreap', serif;
+    font-family: "Siemreap", serif;
     font-size: 14px;
     font-weight: 700;
     color: #ffffff;
-    background: #F04923;
+    background: #f04923;
     border-radius: 14px;
     padding: 10px 24px;
     box-shadow: 0 4px 14px rgba(240, 73, 35, 0.35);
     transition: all 0.15s;
 
     &:hover {
-      background: #D43F1F;
+      background: #d43f1f;
       box-shadow: 0 6px 20px rgba(240, 73, 35, 0.45);
     }
   }
+}
+
+.picker-sheet {
+  --height: auto;
+
+  &::part(content) {
+    border-radius: 28px 28px 0 0;
+    overflow: hidden;
+    height: 55vh !important;
+    max-height: 75vh;        // ← reduce from 90vh
+  }
+}
+
+// Remove extra padding inside the datetime when in time mode
+ion-datetime.custom-datetime {
+  --padding-bottom: 0px !important;
+  margin-bottom: 0 !important;
+  font-family: "Sora", "Siemreap", sans-serif !important;
+
+  &::part(wheel-fade-mask-bottom) {
+    display: none !important;  // removes the bottom fade gradient that adds space
+  }
+}
+.picker-sheet-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 8px 8px;    // ← was 24px bottom, reduce to 8px
+  background: white;
+  .dark & { background: #111; }
 }
 
 // ── Khmer Alert ───────────────────────────────────────────────────
@@ -273,39 +268,45 @@ ion-datetime.custom-datetime {
     border-radius: 24px !important;
     padding: 4px;
     background: white;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.15) !important;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15) !important;
 
-    .dark & { background: #1a1a1a; }
+    .dark & {
+      background: #1a1a1a;
+    }
   }
 
   .alert-head {
     padding: 22px 22px 8px;
 
     .alert-title {
-      font-family: 'Moul', serif !important;
+      font-family: "Moul", serif !important;
       font-size: 16px !important;
-      color: #F04923 !important;
+      color: #f04923 !important;
       line-height: 1.8 !important;
     }
 
     .alert-sub-title {
-      font-family: 'Moul', serif !important;
+      font-family: "Moul", serif !important;
       font-size: 13px !important;
       color: #262626 !important;
       line-height: 1.8 !important;
       margin-top: 4px;
-      .dark & { color: #f5f5f5 !important; }
+      .dark & {
+        color: #f5f5f5 !important;
+      }
     }
   }
 
   .alert-message {
-    font-family: 'Siemreap', serif !important;
+    font-family: "Siemreap", serif !important;
     font-size: 13px !important;
     line-height: 1.8 !important;
     color: #525252 !important;
     padding: 0 22px 18px !important;
     white-space: pre-line;
-    .dark & { color: #a3a3a3 !important; }
+    .dark & {
+      color: #a3a3a3 !important;
+    }
   }
 
   .alert-button-group {
@@ -314,7 +315,7 @@ ion-datetime.custom-datetime {
 
     .alert-btn-cancel button {
       border-radius: 14px !important;
-      font-family: 'Siemreap', serif !important;
+      font-family: "Siemreap", serif !important;
       font-size: 13px !important;
       background: #f5f5f5 !important;
       color: #525252 !important;
@@ -322,11 +323,11 @@ ion-datetime.custom-datetime {
 
     .alert-btn-danger button {
       border-radius: 14px !important;
-      font-family: 'Siemreap', serif !important;
+      font-family: "Siemreap", serif !important;
       font-size: 13px !important;
-      background: #F04923 !important;
+      background: #f04923 !important;
       color: white !important;
-      box-shadow: 0 4px 12px rgba(240,73,35,0.3) !important;
+      box-shadow: 0 4px 12px rgba(240, 73, 35, 0.3) !important;
     }
   }
 }
@@ -334,7 +335,9 @@ ion-datetime.custom-datetime {
 .reminder-alert .alert-wrapper {
   border: 2px solid rgba(139, 92, 246, 0.25);
 
-  .alert-title { color: #7c3aed !important; }
+  .alert-title {
+    color: #7c3aed !important;
+  }
 }
 
 ion-header {
@@ -352,5 +355,11 @@ ion-header {
 
     /* Force background color */
     --background: white;
+
+    ion-title {
+      font-family: "Moul", serif !important;
+      line-height: 1.8 !important;
+      --color: #dc2626;
+    }
   }
 }

@@ -5,5 +5,11 @@
 </ion-header>
 
 <ion-content>
+    <!-- ── Ads — show right below header ── -->
+  <div class="pt-2">
+    <app-ad-banner *ngFor="let ad of adSvc.activeAds()" [ad]="ad">
+    </app-ad-banner>
+  </div>
+  
   <app-events-page></app-events-page>
 </ion-content>
