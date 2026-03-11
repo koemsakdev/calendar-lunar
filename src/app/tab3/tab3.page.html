@@ -157,7 +157,7 @@
   </div>
 
   <!-- FAB -->
-  <div *ngIf="reminders().length > 0" class="fixed bottom-4 right-5 z-50">
+  <div *ngIf="reminders().length > 0" class="fixed bottom-20 right-5 z-50">
     <button
       (click)="openCreate()"
       class="w-14 h-14 rounded-full bg-[#F04923] text-white shadow-lg shadow-[#F04923]/40 flex items-center justify-center active:scale-95 transition-all duration-150"
@@ -231,22 +231,16 @@
           >
         </button>
 
+        <!-- Date modal -->
         <ion-modal
           trigger="date-trigger"
-          [initialBreakpoint]="0.6"
-          [breakpoints]="[0, 0.6]"
-          cssClass="picker-modal"
+          cssClass="khmer-picker-modal"
           (ionModalDidPresent)="onDateModalOpen()"
         >
           <ng-template>
-            <div
-              class="flex flex-col items-center py-4 px-2 bg-white dark:bg-neutral-900 rounded-t-3xl"
-            >
-              <p
-                class="font-moul text-sm text-neutral-600 dark:text-neutral-300 mb-3 leading-loose overflow-visible"
-              >
-                ជ្រើសរើសកាលបរិច្ឆេទ
-              </p>
+            <div class="picker-sheet bg-white dark:bg-neutral-900">
+              <div class="picker-handle"></div>
+              <p class="picker-title font-moul">ជ្រើសរើសកាលបរិច្ឆេទ</p>
               <ion-datetime
                 #datePicker
                 presentation="date"
@@ -254,7 +248,7 @@
                 [showDefaultButtons]="true"
                 doneText="យល់ព្រម"
                 cancelText="បោះបង់"
-                class="rounded-2xl w-full custom-datetime font-siemreap"
+                class="custom-datetime"
                 locale="en-US"
                 size="cover"
               ></ion-datetime>
@@ -297,25 +291,28 @@
           >
         </button>
 
+        <!-- Time modal -->
         <ion-modal
           trigger="time-trigger"
-          [initialBreakpoint]="0.5"
-          [breakpoints]="[0, 0.5]"
-          cssClass="picker-modal picker-sheet time-picker-sheet"
+          cssClass="khmer-picker-modal"
           (ionModalDidPresent)="onTimeModalOpen()"
         >
           <ng-template>
-            <ion-datetime
-              #timePicker
-              presentation="time"
-              (ionChange)="onTimeChange($event)"
-              [showDefaultButtons]="true"
-              doneText="យល់ព្រម"
-              cancelText="បោះបង់"
-              class="rounded-2xl w-full custom-datetime"
-              hourCycle="h12"
-              size="cover"
-            ></ion-datetime>
+            <div class="picker-sheet">
+              <div class="picker-handle"></div>
+              <p class="picker-title font-moul">ជ្រើសរើសម៉ោង</p>
+              <ion-datetime
+                #timePicker
+                presentation="time"
+                (ionChange)="onTimeChange($event)"
+                [showDefaultButtons]="true"
+                doneText="យល់ព្រម"
+                cancelText="បោះបង់"
+                class="custom-datetime"
+                hourCycle="h12"
+                size="cover"
+              ></ion-datetime>
+            </div>
           </ng-template>
         </ion-modal>
       </div>
