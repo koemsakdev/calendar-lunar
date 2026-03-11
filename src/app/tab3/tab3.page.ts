@@ -46,8 +46,6 @@ import { FilterModalComponent } from '../shared/filter-modal/filter-modal.compon
 import { Capacitor } from '@capacitor/core';
 import { LocalNotifications } from '@capacitor/local-notifications';
 import { ReminderAlertComponent } from '../components/reminder-alert/reminder-alert.component';
-import { AdService } from '../services/ad.service';
-import { AdBannerComponent } from '../shared/ad-banner/ad-banner.component';
 
 interface ReminderForm {
   id: string;
@@ -95,8 +93,7 @@ const REPEAT_ICONS: Record<RepeatType, string> = {
     IonDatetime,
     IonModal,
     FilterModalComponent,
-    ReminderAlertComponent,
-    AdBannerComponent
+    ReminderAlertComponent
   ],
   templateUrl: './tab3.page.html',
   styleUrls: ['./tab3.page.scss'],
@@ -106,8 +103,6 @@ export class Tab3Page implements OnInit, OnDestroy {
   private alertCtrl = inject(AlertController);
   private ngZone = inject(NgZone);
   private alarmSvc = inject(AlarmService);
-
-  adSvc = inject(AdService);
 
   @ViewChild('datePicker') datePicker?: IonDatetime;
   @ViewChild('timePicker') timePicker?: IonDatetime;

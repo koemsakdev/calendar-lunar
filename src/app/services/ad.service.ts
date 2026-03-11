@@ -27,22 +27,22 @@ const AD_POOL: Ad[] = [
     description: 'Transfer instantly with zero fees inside Cambodia',
     ctaText: 'ចុចមើល',
     ctaUrl: 'https://ababank.com',
-    bgGradient: 'from-blue-600 to-blue-400',
-    accentColor: '#2563eb',
+    bgGradient: 'from-[#0FC8C0] to-[$#005B7A]',
+    accentColor: '#005B7A',
     emoji: '🏦',
   },
   {
     id: 'ad_002',
     type: 'banner',
-    brand: 'Wing Money',
+    brand: 'Wing Bank',
     tagline: 'ដំណើរការលឿន ២៤/៧',
     taglineEn: 'Fast & Always On',
     description: 'Pay bills, top-up, transfer — all in one app',
     ctaText: 'ទាញយក',
-    ctaUrl: 'https://wingmoney.com',
-    bgGradient: 'from-orange-500 to-yellow-400',
-    accentColor: '#f97316',
-    emoji: '💸',
+    ctaUrl: 'https://wingbank.com.kh',
+    bgGradient: 'from-[#0077FF] to-[#9FC136]',
+    accentColor: '#9FC136',
+    emoji: '🏦',
   },
   {
     id: 'ad_003',
@@ -53,8 +53,8 @@ const AD_POOL: Ad[] = [
     description: '4G/5G coverage across all provinces',
     ctaText: 'ជ្រើសរើស',
     ctaUrl: 'https://smart.com.kh',
-    bgGradient: 'from-red-500 to-pink-400',
-    accentColor: '#ef4444',
+    bgGradient: 'from-[#009639] to-[#32AE7D]',
+    accentColor: '#009639',
     emoji: '📶',
   },
   {
@@ -66,8 +66,8 @@ const AD_POOL: Ad[] = [
     description: 'Best roaming rates across Southeast Asia',
     ctaText: 'មើលផែនការ',
     ctaUrl: 'https://cellcard.com.kh',
-    bgGradient: 'from-green-500 to-emerald-400',
-    accentColor: '#22c55e',
+    bgGradient: 'from-[#FEED6D] to-[#F6A227]',
+    accentColor: '#F6A227',
     emoji: '🌏',
   },
   {
@@ -79,8 +79,8 @@ const AD_POOL: Ad[] = [
     description: 'Personal & business loans approved in 24 hours',
     ctaText: 'ដាក់ពាក្យ',
     ctaUrl: 'https://phillipbank.com.kh',
-    bgGradient: 'from-violet-600 to-purple-400',
-    accentColor: '#7c3aed',
+    bgGradient: 'from-[#FAB770] to-[#05357D]',
+    accentColor: '#05357D',
     emoji: '💰',
   },
   {
@@ -102,6 +102,8 @@ const AD_POOL: Ad[] = [
 export class AdService {
   activeAds = signal<Ad[]>([]);
 
+  private lastShownId: string | null = null;
+
   constructor() {
     this.initSession(2);
   }
@@ -111,13 +113,18 @@ export class AdService {
     this.activeAds.set(shuffled.slice(0, count));
   }
 
-  refreshAds(): void {
-    this.initSession(Math.random() > 0.5 ? 1 : 2);
+  // Returns a random ad — avoids showing the same ad twice in a row
+  getRandomAd(): Ad | null {
+    if (AD_POOL.length === 0) return null;
+    const pool = this.lastShownId
+      ? AD_POOL.filter(a => a.id !== this.lastShownId)
+      : AD_POOL;
+    const ad = pool[Math.floor(Math.random() * pool.length)];
+    this.lastShownId = ad.id;
+    return ad;
   }
 
-  getRandomAd(): Ad | null {
-    if (this.activeAds().length === 0) return null;
-    const ads = this.activeAds();
-    return ads[Math.floor(Math.random() * ads.length)];
+  refreshAds(): void {
+    this.initSession(Math.random() > 0.5 ? 1 : 2);
   }
 }
