@@ -229,9 +229,17 @@ ion-modal.khmer-picker-modal {
 }
 
 .picker-sheet {
-  padding: 16px 12px 24px;
+  padding: 16px 12px 0 12px;
   border-radius: 20px;
   overflow: hidden;
+}
+
+.custom-datetime {
+  --background: #fff;
+  --title-color: #222;
+  --wheel-highlight-background: #eaeaea;
+  --wheel-highlight-border-radius: 12px;
+  --wheel-fade-background-rgb: 255,255,255;
 }
 
 .picker-handle {

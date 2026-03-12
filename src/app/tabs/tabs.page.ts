@@ -36,6 +36,12 @@ export class TabsPage {
   }
 
   ngOnInit(): void {
+    const url = this.router.url;
+    
+    if (url.includes('tab1')) this.activeTab = 'tab1';
+    else if (url.includes('tab2')) this.activeTab = 'tab2';
+    else if (url.includes('tab3')) this.activeTab = 'tab3';
+
     // ── First ad: show after 30 seconds ──────────────────────────
     this.firstAdTimer = setTimeout(() => {
       this.showAd();

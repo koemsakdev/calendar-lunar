@@ -153,36 +153,6 @@ ion-datetime.custom-datetime {
     color: #f04923;
   }
 
-  // ── AM/PM pill ───────────────────────────────────────────────
-  &::part(am-pm-button) {
-    font-family: "Sora", sans-serif;
-    font-size: 15px;
-    font-weight: 700;
-    color: #f04923;
-    background: rgba(240, 73, 35, 0.1);
-    border-radius: 14px;
-    padding: 8px 14px;
-    border: 1.5px solid rgba(240, 73, 35, 0.2);
-    transition: all 0.15s;
-
-    &:hover {
-      background: rgba(240, 73, 35, 0.2);
-    }
-  }
-
-  // ── Time colon separator ─────────────────────────────────────
-  &::part(time-colon) {
-    font-family: "Sora", sans-serif;
-    font-size: 52px;
-    font-weight: 800;
-    color: #d4d4d4;
-    letter-spacing: 0;
-
-    .dark & {
-      color: #404040;
-    }
-  }
-
   // ── Action buttons row ───────────────────────────────────────
   &::part(buttons) {
     padding: 12px 16px 16px;
@@ -199,7 +169,7 @@ ion-datetime.custom-datetime {
     font-size: 14px;
     font-weight: 500;
     color: #737373;
-    background: #f5f5f5;
+    background: #ffffff;
     border-radius: 14px;
     padding: 10px 20px;
     transition: background 0.15s;
@@ -232,35 +202,6 @@ ion-datetime.custom-datetime {
   }
 }
 
-.picker-sheet {
-  --height: auto;
-
-  &::part(content) {
-    border-radius: 28px 28px 0 0;
-    overflow: hidden;
-    height: 55vh !important;
-    max-height: 75vh;        // ← reduce from 90vh
-  }
-}
-
-// Remove extra padding inside the datetime when in time mode
-ion-datetime.custom-datetime {
-  --padding-bottom: 0px !important;
-  margin-bottom: 0 !important;
-  font-family: "Sora", "Siemreap", sans-serif !important;
-
-  &::part(wheel-fade-mask-bottom) {
-    display: none !important;  // removes the bottom fade gradient that adds space
-  }
-}
-.picker-sheet-inner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 12px 8px 8px;    // ← was 24px bottom, reduce to 8px
-  background: white;
-  .dark & { background: #111; }
-}
 
 // ── Khmer Alert ───────────────────────────────────────────────────
 .khmer-alert {
